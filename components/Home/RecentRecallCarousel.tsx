@@ -1,7 +1,14 @@
+import { RecentRecallType } from "@/types/recall.type";
 import RecallItem from "../common/RecallItem";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 
-const RecentRecallCarousel = () => {
+const RecentRecallCarousel = async () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(`${baseUrl}/recall/recent`, {
+    next: { revalidate: 60 * 10 } // 10분마다 재검증
+  });
+  const recalls = (await res.json()) as RecentRecallType[];
+
   return (
     <Carousel
       opts={{
@@ -9,12 +16,14 @@ const RecentRecallCarousel = () => {
       }}
     >
       <CarouselContent className="m-0 gap-3 w-85.75">
-        {[1, 2, 3, 4, 5].map((v) => (
-          <CarouselItem key={v} className="p-0 basis-33">
+        {recalls.map((recall) => (
+          <CarouselItem key={recall.recallSn} className="p-0 basis-33">
             <RecallItem
               href=""
-              title="제목인데 좀긴걸써보려고하는데요"
-              description="설명인데 좀긴걸써보려고하는데요"
+              title={recall.productNm}
+              description={recall.bsnmNm || recall.makr || ""}
+              img={recall.recallImgUrls.length > 0 ? recall.recallImgUrls[0] : "/defaultImg.jpeg"}
+              alt={recall.productNm}
             />
           </CarouselItem>
         ))}
