@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "pretendard/dist/web/static/pretendard.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -123,4 +123,80 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html {
+  font-family: "Pretendard", sans-serif;
+}
+
+@utility text-11_M {
+  @apply text-[10px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-11_B {
+  @apply text-[10px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-12_M {
+  @apply text-[12px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-12_B {
+  @apply text-[12px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-13_M {
+  @apply text-[13px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-13_B {
+  @apply text-[12px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-14_M {
+  @apply text-[14px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-14_B {
+  @apply text-[14px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-16_M {
+  @apply text-[16px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-16_B {
+  @apply text-[16px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-18_M {
+  @apply text-[18px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-18_B {
+  @apply text-[18px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-20_M {
+  @apply text-[20px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-20_B {
+  @apply text-[20px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-24_M {
+  @apply text-[24px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-24_B {
+  @apply text-[24px] leading-[100%] font-bold tracking-[-2.5%];
+}
+
+@utility text-32_M {
+  @apply text-[32px] leading-[100%] font-medium tracking-[-2.5%];
+}
+
+@utility text-32_B {
+  @apply text-[32px] leading-[100%] font-bold tracking-[-2.5%];
 }
