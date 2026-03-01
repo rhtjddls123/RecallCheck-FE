@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 interface DateFilterProps {
   title: string;
@@ -59,6 +60,7 @@ const DateFilter = ({ title }: DateFilterProps) => {
           selected={date}
           onSelect={handleFilter}
           numberOfMonths={1}
+          locale={ko}
         />
       </PopoverContent>
     </Popover>
