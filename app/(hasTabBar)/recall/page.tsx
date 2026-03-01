@@ -1,6 +1,7 @@
 import Header from "@/components/common/Header";
 import SearchInput from "@/components/common/SearchInput";
 import RecallFilterList from "@/components/recall/RecallFilterList";
+import RecallProductList from "@/components/recall/RecallProductList";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const RecallPage = () => {
@@ -14,13 +15,10 @@ const RecallPage = () => {
             <SearchInput />
           </section>
 
-          {/* 필터 영역 */}
-          <section className="flex gap-2 justify-end">
+          <section className="flex flex-col items-center">
             <RecallFilterList />
+            <RecallProductList />
           </section>
-
-          {/* 아이템 목록 영역 */}
-          <section></section>
         </div>
       </ScrollArea>
     </div>
