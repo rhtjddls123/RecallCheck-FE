@@ -1,10 +1,9 @@
 import Header from "@/components/common/Header";
-import TabBar from "@/components/common/TabBar";
+import SearchInput from "@/components/common/SearchInput";
 import Banner from "@/components/Home/Banner";
 import HomeSectionWrapper from "@/components/Home/HomeSectionWrapper";
 import RecentRecallCarousel from "@/components/Home/RecentRecallCarousel";
 import SafetyInfoList from "@/components/Home/SafetyInfoList";
-import SearchInput from "@/components/Home/SearchInput";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Home() {
