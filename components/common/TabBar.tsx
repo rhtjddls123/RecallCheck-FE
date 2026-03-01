@@ -20,6 +20,7 @@ const TabBar = () => {
             href={item.href}
             className="size-11 flex flex-col items-center gap-1.5 justify-center"
             activeClassName="text-blue-300"
+            end
           >
             <item.Icon className="size-6" />
             <span className="text-12_M h-3.5">{item.name}</span>
