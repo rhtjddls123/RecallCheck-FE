@@ -36,8 +36,6 @@ export default function Home() {
           </HomeSectionWrapper>
         </div>
       </ScrollArea>
-
-      <TabBar />
     </div>
   );
 }
