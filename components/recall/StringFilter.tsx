@@ -13,11 +13,14 @@ interface StringFilterProps {
 }
 
 const StringFilter = ({ title, options, paramKey }: StringFilterProps) => {
+  const searchParams = useSearchParams();
+  const currentValue = searchParams.get(paramKey);
+  const currentLabel = Object.keys(options).find((key) => options[key] === currentValue) || title;
+
   const [open, setOpen] = useState(false);
-  const [filter, setFilter] = useState(title);
+  const [filter, setFilter] = useState(currentLabel);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleSort = (option: string) => {
     setFilter(option);

@@ -7,7 +7,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 import { DateRange } from "react-day-picker";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { ko } from "date-fns/locale";
 
 interface DateFilterProps {
@@ -15,11 +15,18 @@ interface DateFilterProps {
 }
 
 const DateFilter = ({ title }: DateFilterProps) => {
+  const searchParams = useSearchParams();
+  const from = searchParams.get("startDate");
+  const to = searchParams.get("endDate");
+  const parseDate = (d: string | null) => (d ? parse(d, "yy-MM-dd", new Date()) : undefined);
+
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState<DateRange | undefined>(undefined);
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: parseDate(from),
+    to: parseDate(to)
+  });
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleFilter = (selectedDate?: DateRange) => {
     const params = new URLSearchParams(searchParams.toString());
