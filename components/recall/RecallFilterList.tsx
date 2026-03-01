@@ -6,7 +6,7 @@ import { ORDER_FILTER_KEY_MAP } from "@/const/FILTER.cont";
 
 const RecallFilterList = () => {
   return (
-    <Carousel opts={{ align: "start", dragFree: true }} className="w-full">
+    <Carousel opts={{ align: "start", dragFree: true }} className="w-full bg-white pb-2">
       <CarouselContent className="ml-0 gap-2 mx-4">
         <CarouselItem className="p-0 basis-auto">
           <StringFilter title="카테고리" options={RECALL_CATEGORY_KEY_MAP} paramKey="category" />
