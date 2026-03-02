@@ -3,8 +3,21 @@ import SearchInput from "@/components/common/SearchInput";
 import RecallFilterList from "@/components/recall/RecallFilterList";
 import RecallProductList from "@/components/recall/RecallProductList";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { fetchWithParams } from "@/lib/fetchWithParams";
+import { RecallPaginationResponse } from "@/types/response.type";
 
-const RecallPage = () => {
+interface RecallPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const RecallPage = async ({ searchParams }: RecallPageProps) => {
+  const filters = await searchParams;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetchWithParams(`${baseUrl}/recall`, filters, {
+    cache: "no-store"
+  });
+  const recallData = (await res.json()) as RecallPaginationResponse;
+
   return (
     <div>
       <Header />
@@ -17,7 +30,7 @@ const RecallPage = () => {
 
           <section className="flex flex-col items-center">
             <RecallFilterList />
-            <RecallProductList />
+            <RecallProductList recallData={recallData} />
           </section>
         </div>
       </ScrollArea>

@@ -1,13 +1,23 @@
-"use client";
 import RecallItem from "../common/RecallItem";
 import RecallPagination from "./RecallPagination";
+import { RecallPaginationResponse } from "@/types/response.type";
 
-const RecallProductList = () => {
+interface RecallProductListProps {
+  recallData: RecallPaginationResponse;
+}
+
+const RecallProductList = ({ recallData }: RecallProductListProps) => {
   return (
     <div className="w-full bg-white flex flex-col items-center">
       <div className="grid grid-cols-2 gap-4 bg-white">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => (
-          <RecallItem key={v} href="" title="테스트" description="테스트" img="/defaultImg.jpeg" />
+        {recallData.data.map((p) => (
+          <RecallItem
+            key={p.recallSn}
+            href={`/recall/${p.recallSn}`}
+            title={p.productNm}
+            description={p.makr || p.bsnmNm || ""}
+            img={p.recallImgUrls?.[0]}
+          />
         ))}
       </div>
       <RecallPagination totalPage={6} />
