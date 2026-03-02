@@ -32,6 +32,7 @@ const DateFilter = ({ title }: DateFilterProps) => {
     const params = new URLSearchParams(searchParams.toString());
     if (selectedDate?.from) params.set("startDate", format(selectedDate.from, "yy-MM-dd"));
     if (selectedDate?.to) params.set("endDate", format(selectedDate.to, "yy-MM-dd"));
+    params.set("page", "1");
     router.replace(`?${params.toString()}`);
     setDate(selectedDate);
   };

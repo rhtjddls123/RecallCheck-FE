@@ -26,6 +26,7 @@ const StringFilter = ({ title, options, paramKey }: StringFilterProps) => {
     setFilter(option);
     const params = new URLSearchParams(searchParams.toString());
     params.set(paramKey, options[option]);
+    params.set("page", "1");
     router.replace(`?${params.toString()}`);
   };
 
