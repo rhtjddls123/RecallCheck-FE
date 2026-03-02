@@ -37,6 +37,16 @@ const DateFilter = ({ title }: DateFilterProps) => {
     setDate(selectedDate);
   };
 
+  const handleReset = () => {
+    setDate((prev) => ({ ...prev, from: undefined, to: undefined }));
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("startDate");
+    params.delete("endDate");
+    params.set("page", "1");
+    router.replace(`?${params.toString()}`);
+    setOpen((prev) => !prev);
+  };
+
   return (
     <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
@@ -61,7 +71,7 @@ const DateFilter = ({ title }: DateFilterProps) => {
           {open ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto p-0 flex flex-col items-end">
         <Calendar
           mode="range"
           defaultMonth={date?.from}
@@ -70,6 +80,9 @@ const DateFilter = ({ title }: DateFilterProps) => {
           numberOfMonths={1}
           locale={ko}
         />
+        <button onClick={handleReset} className="w-fit mr-2 mb-2 text-12_B cursor-pointer">
+          초기화
+        </button>
       </PopoverContent>
     </Popover>
   );
