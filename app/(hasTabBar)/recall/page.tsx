@@ -22,13 +22,13 @@ const RecallPage = async ({ searchParams }: RecallPageProps) => {
     <div>
       <Header />
 
-      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-100">
-        <div className="flex flex-col gap-2.5">
+      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-100 [&>div>div]:h-full">
+        <div className="flex flex-col gap-2.5 min-h-full">
           <section className="px-4 py-1.25 bg-white">
             <SearchInput />
           </section>
 
-          <section className="flex flex-col items-center">
+          <section className="flex flex-col items-center flex-1">
             <RecallFilterList />
             <RecallProductList recallData={recallData} />
           </section>

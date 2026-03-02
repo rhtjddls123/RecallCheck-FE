@@ -8,7 +8,7 @@ interface RecallProductListProps {
 
 const RecallProductList = ({ recallData }: RecallProductListProps) => {
   return (
-    <div className="w-full bg-white flex flex-col items-center">
+    <div className="w-full bg-white flex flex-col items-center justify-between h-full flex-1">
       <div className="grid grid-cols-2 gap-4 bg-white">
         {recallData.data.map((p) => (
           <RecallItem
@@ -20,7 +20,8 @@ const RecallProductList = ({ recallData }: RecallProductListProps) => {
           />
         ))}
       </div>
-      <RecallPagination totalPage={6} />
+      {recallData.data.length === 0 && <p>데이터가 없습니다.</p>}
+      <RecallPagination totalPage={recallData.totalPages} />
     </div>
   );
 };
