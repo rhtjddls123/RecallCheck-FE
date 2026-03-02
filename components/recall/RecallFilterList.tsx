@@ -12,7 +12,7 @@ const RecallFilterList = () => {
           <StringFilter title="카테고리" options={RECALL_CATEGORY_KEY_MAP} paramKey="category" />
         </CarouselItem>
         <CarouselItem className="p-0 basis-auto">
-          <DateFilter title="리콜날짜" />
+          <DateFilter title="리콜 공표시작일" />
         </CarouselItem>
         <CarouselItem className="p-0 basis-auto">
           <StringFilter title="정렬" options={ORDER_FILTER_KEY_MAP} paramKey="order" />
