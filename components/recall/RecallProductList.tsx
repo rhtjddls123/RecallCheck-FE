@@ -1,7 +1,19 @@
 import { fetchWithParams } from "@/lib/fetchWithParams";
-import RecallItem from "../common/RecallItem";
+import RecallItem, { RecallItemSkeleton } from "../common/RecallItem";
 import RecallPagination from "./RecallPagination";
 import { RecallPaginationResponse } from "@/types/response.type";
+
+export const RecallProductListLoadingFallback = () => {
+  return (
+    <div className="w-full bg-white flex flex-col items-center justify-between h-full flex-1">
+      <div className="grid grid-cols-2 gap-4 bg-white">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <RecallItemSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 interface RecallProductListProps {
   filters: { [key: string]: string | string[] | undefined };

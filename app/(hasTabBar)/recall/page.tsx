@@ -1,8 +1,9 @@
 import Header from "@/components/common/Header";
 import SearchInput from "@/components/common/SearchInput";
 import RecallFilterList from "@/components/recall/RecallFilterList";
-import RecallProductList from "@/components/recall/RecallProductList";
-import RecallProductListLoadingFallback from "@/components/recall/RecallProductListLoadingFallback";
+import RecallProductList, {
+  RecallProductListLoadingFallback
+} from "@/components/recall/RecallProductList";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Suspense } from "react";
 
