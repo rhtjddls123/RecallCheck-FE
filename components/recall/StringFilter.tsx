@@ -30,6 +30,15 @@ const StringFilter = ({ title, options, paramKey }: StringFilterProps) => {
     router.replace(`?${params.toString()}`);
   };
 
+  const handleReset = () => {
+    setFilter(title);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete(paramKey);
+    params.set("page", "1");
+    router.replace(`?${params.toString()}`);
+    setOpen((prev) => !prev);
+  };
+
   const optionsList = Object.keys(options);
 
   return (
@@ -45,7 +54,7 @@ const StringFilter = ({ title, options, paramKey }: StringFilterProps) => {
           {filter} {open ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-fit min-w-32 p-1 rounded-xl shadow-md flex flex-col items-center">
+      <PopoverContent className="w-fit min-w-32 p-1 rounded-xl shadow-md flex flex-col items-end">
         {optionsList.map((option) => (
           <button
             className={cn(
@@ -58,6 +67,9 @@ const StringFilter = ({ title, options, paramKey }: StringFilterProps) => {
             {option}
           </button>
         ))}
+        <button onClick={handleReset} className="w-fit mr-2 my-1 text-12_B cursor-pointer">
+          초기화
+        </button>
       </PopoverContent>
     </Popover>
   );
