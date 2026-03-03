@@ -1,11 +1,11 @@
 import Header from "@/components/common/Header";
 import SearchInput from "@/components/common/SearchInput";
+import SuspenseWithErrorBoundary from "@/components/common/SuspenseWithErrorBoundary";
 import RecallFilterList from "@/components/recall/RecallFilterList";
 import RecallProductList, {
   RecallProductListLoadingFallback
 } from "@/components/recall/RecallProductList";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Suspense } from "react";
 
 interface RecallPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -26,9 +26,12 @@ const RecallPage = async ({ searchParams }: RecallPageProps) => {
 
           <section className="flex flex-col items-center flex-1">
             <RecallFilterList />
-            <Suspense key={JSON.stringify(filters)} fallback={<RecallProductListLoadingFallback />}>
+            <SuspenseWithErrorBoundary
+              key={JSON.stringify(filters)}
+              loadingFallback={<RecallProductListLoadingFallback />}
+            >
               <RecallProductList filters={filters} />
-            </Suspense>
+            </SuspenseWithErrorBoundary>
           </section>
         </div>
       </ScrollArea>
