@@ -2,9 +2,9 @@ import Header from "@/components/common/Header";
 import SearchInput from "@/components/common/SearchInput";
 import RecallFilterList from "@/components/recall/RecallFilterList";
 import RecallProductList from "@/components/recall/RecallProductList";
+import RecallProductListLoadingFallback from "@/components/recall/RecallProductListLoadingFallback";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { fetchWithParams } from "@/lib/fetchWithParams";
-import { RecallPaginationResponse } from "@/types/response.type";
+import { Suspense } from "react";
 
 interface RecallPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -12,11 +12,6 @@ interface RecallPageProps {
 
 const RecallPage = async ({ searchParams }: RecallPageProps) => {
   const filters = await searchParams;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetchWithParams(`${baseUrl}/recall`, filters, {
-    cache: "no-store"
-  });
-  const recallData = (await res.json()) as RecallPaginationResponse;
 
   return (
     <div>
@@ -30,7 +25,9 @@ const RecallPage = async ({ searchParams }: RecallPageProps) => {
 
           <section className="flex flex-col items-center flex-1">
             <RecallFilterList />
-            <RecallProductList recallData={recallData} />
+            <Suspense key={JSON.stringify(filters)} fallback={<RecallProductListLoadingFallback />}>
+              <RecallProductList filters={filters} />
+            </Suspense>
           </section>
         </div>
       </ScrollArea>
