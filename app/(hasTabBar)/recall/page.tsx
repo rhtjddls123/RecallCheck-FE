@@ -1,10 +1,11 @@
 import Header from "@/components/common/Header";
 import SearchInput from "@/components/common/SearchInput";
+import SuspenseWithErrorBoundary from "@/components/common/SuspenseWithErrorBoundary";
 import RecallFilterList from "@/components/recall/RecallFilterList";
-import RecallProductList from "@/components/recall/RecallProductList";
+import RecallProductList, {
+  RecallProductListLoadingFallback
+} from "@/components/recall/RecallProductList";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { fetchWithParams } from "@/lib/fetchWithParams";
-import { RecallPaginationResponse } from "@/types/response.type";
 
 interface RecallPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -12,11 +13,6 @@ interface RecallPageProps {
 
 const RecallPage = async ({ searchParams }: RecallPageProps) => {
   const filters = await searchParams;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetchWithParams(`${baseUrl}/recall`, filters, {
-    cache: "no-store"
-  });
-  const recallData = (await res.json()) as RecallPaginationResponse;
 
   return (
     <div>
@@ -30,7 +26,12 @@ const RecallPage = async ({ searchParams }: RecallPageProps) => {
 
           <section className="flex flex-col items-center flex-1">
             <RecallFilterList />
-            <RecallProductList recallData={recallData} />
+            <SuspenseWithErrorBoundary
+              key={JSON.stringify(filters)}
+              loadingFallback={<RecallProductListLoadingFallback />}
+            >
+              <RecallProductList filters={filters} />
+            </SuspenseWithErrorBoundary>
           </section>
         </div>
       </ScrollArea>

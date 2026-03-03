@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 
 interface SafetyInfoCardProps {
   title: string;
@@ -19,6 +20,19 @@ const SafetyInfoCard = ({ title, description, img, href }: SafetyInfoCardProps) 
         )}
       </div>
     </Link>
+  );
+};
+
+export const SafetyInfoCardSkeleton = () => {
+  return (
+    <div className="flex gap-3 justify-center items-center">
+      <Skeleton className="size-19.25 rounded-2xl" />
+
+      <div className="flex flex-col gap-1.5 justify-center items-center">
+        <Skeleton className="w-63.5 h-4.5" />
+        <Skeleton className="w-63.5 h-3" />
+      </div>
+    </div>
   );
 };
 

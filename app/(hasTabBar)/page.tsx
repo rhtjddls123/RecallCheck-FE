@@ -1,9 +1,12 @@
 import Header from "@/components/common/Header";
 import SearchInput from "@/components/common/SearchInput";
+import SuspenseWithErrorBoundary from "@/components/common/SuspenseWithErrorBoundary";
 import Banner from "@/components/Home/Banner";
 import HomeSectionWrapper from "@/components/Home/HomeSectionWrapper";
-import RecentRecallCarousel from "@/components/Home/RecentRecallCarousel";
-import SafetyInfoList from "@/components/Home/SafetyInfoList";
+import RecentRecallCarousel, {
+  RecentRecallCarouselLoadingFallback
+} from "@/components/Home/RecentRecallCarousel";
+import SafetyInfoList, { SafetyInfoListLoadingFallback } from "@/components/Home/SafetyInfoList";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Home() {
@@ -26,12 +29,16 @@ export default function Home() {
 
           {/* 최근 리콜 제품 영역 */}
           <HomeSectionWrapper href="/recall" title="최근 리콜 제품">
-            <RecentRecallCarousel />
+            <SuspenseWithErrorBoundary loadingFallback={<RecentRecallCarouselLoadingFallback />}>
+              <RecentRecallCarousel />
+            </SuspenseWithErrorBoundary>
           </HomeSectionWrapper>
 
           {/* 안전 정보 영역 */}
           <HomeSectionWrapper title="안전정보" href="/safetyInfo">
-            <SafetyInfoList />
+            <SuspenseWithErrorBoundary loadingFallback={<SafetyInfoListLoadingFallback />}>
+              <SafetyInfoList />
+            </SuspenseWithErrorBoundary>
           </HomeSectionWrapper>
         </div>
       </ScrollArea>
