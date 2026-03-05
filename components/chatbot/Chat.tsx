@@ -12,6 +12,8 @@ import { RECALL_CATEGORY_KEY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const"
 import { recallApi } from "@/services/recallService";
 import YesNoButtons from "./YesNoButtons";
 import SearchResults from "./SearchResults";
+import { openaiApi } from "@/services/openaiService";
+import { CameraIcon } from "lucide-react";
 
 const BOT = {
   greeting: "안녕하세요! 리콜 제품 검색 서비스입니다",
@@ -28,7 +30,9 @@ const BOT = {
   notFoundEmbedding: "비슷한 제품이 없습니다.",
   error: "검색 중 오류가 발생했습니다. 다시 시도해주세요.",
   retry: "처음으로 돌아갑니다. 카테고리를 선택해주세요.",
-  cancelled: "취소했습니다. 카테고리를 다시 선택해주세요."
+  cancelled: "취소했습니다. 카테고리를 다시 선택해주세요.",
+  ocrRetry: "다시 입력해주세요.",
+  ocrConfirm: (query: string) => `'${query}'이(가) 맞습니까?`
 };
 
 function botMsg(message: string, payload?: MessagePayload): ChatMessage {
@@ -45,11 +49,11 @@ export default function Chat() {
   const [isTyping, setIsTyping] = useState(false);
   const [input, setInput] = useState("");
 
-  // 오타 보정 검색어 저장 (임베딩 단계에서 원본 쿼리 사용)
   const [originalQuery, setOriginalQuery] = useState("");
   const [correctedQuery, setCorrectedQuery] = useState("");
 
   const bottomRef = useRef<HTMLDivElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -71,7 +75,6 @@ export default function Chat() {
     setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, used: true } : m)));
   };
 
-  // 초기화 (처음으로 돌아가기)
   const resetToStart = async (labelMsg?: string) => {
     setSelectedSub(null);
     setInput("");
@@ -81,7 +84,6 @@ export default function Chat() {
     await pushWithDelay([botMsg(labelMsg ?? BOT.retry, { type: "category-buttons" })]);
   };
 
-  // 초기 메시지
   useEffect(() => {
     const init = async () => {
       await pushWithDelay([
@@ -92,7 +94,6 @@ export default function Chat() {
     init();
   }, []);
 
-  // 카테고리 선택
   const handleCategory = async (cat: MainCategory, msgId: string) => {
     if (step !== "SELECT_CATEGORY") return;
     markUsed(msgId);
@@ -111,23 +112,31 @@ export default function Chat() {
     await pushWithDelay([botMsg(BOT.askQuery, { type: "query-cancel" })]);
   };
 
-  // 취소
+  // 모르겠어요 → 카테고리 없이 INPUT_QUERY로
+  const handleUnknownCategory = async (msgId: string) => {
+    if (step !== "SELECT_CATEGORY") return;
+    markUsed(msgId);
+    setSelectedSub(null);
+    setStep("INPUT_QUERY");
+    push(userMsg("모르겠어요"));
+    await pushWithDelay([botMsg(BOT.askQuery, { type: "query-cancel" })]);
+  };
+
   const handleCancel = async (msgId: string) => {
     markUsed(msgId);
     push(userMsg("취소"));
     await resetToStart(BOT.cancelled);
   };
 
-  /**
-   * 1단계: 사용자 입력 후 raw 검색
-   * 1-1. 선택 카테고리로 exact 검색
-   * 1-2. 없으면 notFoundInCategory 안내 후 전체 카테고리로 exact 재검색
-   */
   const handleSearch = async () => {
     const query = input.trim();
     if (step !== "INPUT_QUERY" || !query) return;
 
     setInput("");
+    await searchWithQuery(query);
+  };
+
+  const searchWithQuery = async (query: string) => {
     setOriginalQuery(query);
     push(userMsg(query));
     setStep("LOADING");
@@ -142,7 +151,6 @@ export default function Chat() {
       setIsTyping(false);
 
       if (result.found) {
-        // 결과 있음
         const message = result.differentCategory ? BOT.foundOtherCategory : BOT.found;
         if (result.differentCategory) {
           await pushWithDelay([botMsg(BOT.notFoundInCategory)]);
@@ -151,7 +159,7 @@ export default function Chat() {
           botMsg(message, {
             type: "results",
             products: result.data.products,
-            foundInOtherCategory: false,
+            foundInOtherCategory: result.differentCategory,
             count: result.data.count
           })
         ]);
@@ -159,7 +167,6 @@ export default function Chat() {
         return;
       }
 
-      // 전체에서도 없음 → notFound 하나만 출력 후 오타 보정 단계로
       await pushWithDelay([botMsg(BOT.notFound)]);
       await proceedToTypoStep(query);
     } catch {
@@ -169,16 +176,59 @@ export default function Chat() {
     }
   };
 
-  /**
-   * 2단계: LLM 오타 보정 후 "혹시 ~을 찾으셨나요?" 질문
-   */
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    setStep("LOADING");
+    setIsTyping(true);
+
+    try {
+      const result = await openaiApi.imageOcr(file);
+      setIsTyping(false);
+
+      if (!result.found || !result.query) {
+        // OCR 실패 → message 출력 + 다시 입력 안내, INPUT_QUERY 유지
+        await pushWithDelay([botMsg(result.message), botMsg(BOT.ocrRetry)]);
+        setStep("INPUT_QUERY");
+        return;
+      }
+
+      // OCR 성공 → query 확인 질문
+      setStep("CONFIRM_OCR");
+      await pushWithDelay([
+        botMsg(BOT.ocrConfirm(result.query), { type: "confirm-ocr", ocrQuery: result.query })
+      ]);
+    } catch {
+      setIsTyping(false);
+      await pushWithDelay([botMsg(BOT.error)]);
+      setStep("INPUT_QUERY");
+    }
+  };
+
+  // OCR "예" → 바로 검색
+  const handleOcrYes = async (msgId: string, ocrQuery: string) => {
+    if (step !== "CONFIRM_OCR") return;
+    markUsed(msgId);
+    push(userMsg("예"));
+    await searchWithQuery(ocrQuery);
+  };
+
+  // OCR "아니오" → input에 query 입력해두고 수정 가능하게
+  const handleOcrNo = async (msgId: string, ocrQuery: string) => {
+    if (step !== "CONFIRM_OCR") return;
+    markUsed(msgId);
+    push(userMsg("아니오"));
+    setInput(ocrQuery);
+    setStep("INPUT_QUERY");
+  };
+
   const proceedToTypoStep = async (query: string) => {
     setIsTyping(true);
     try {
-      // LLM 오타 보정 API 호출
-      const typoResult = await recallApi.correctTypo(query);
+      const typoResult = await openaiApi.correctTypo(query);
       if (typoResult.isSame) {
-        // 오타 보정 전후가 같은 경우
         setIsTyping(false);
         await proceedToEmbeddingStep();
         return;
@@ -186,19 +236,14 @@ export default function Chat() {
       const corrected = typoResult.corrected;
       setCorrectedQuery(corrected);
       setIsTyping(false);
-
       setStep("CONFIRM_TYPO");
       await pushWithDelay([botMsg(BOT.typoCorrection(corrected), { type: "confirm-typo" })]);
     } catch {
       setIsTyping(false);
-      // 오타 보정 실패 시 임베딩 단계로 넘어감
       await proceedToEmbeddingStep();
     }
   };
 
-  /**
-   * 오타 보정 "예" 클릭 → 보정된 검색어로 exact 재검색
-   */
   const handleTypoYes = async (msgId: string) => {
     if (step !== "CONFIRM_TYPO") return;
     markUsed(msgId);
@@ -215,7 +260,6 @@ export default function Chat() {
       setIsTyping(false);
 
       if (result.found) {
-        // 결과 있음
         const message = result.differentCategory ? BOT.foundOtherCategory : BOT.found;
         if (result.differentCategory) {
           await pushWithDelay([botMsg(BOT.notFoundInCategory)]);
@@ -224,7 +268,7 @@ export default function Chat() {
           botMsg(message, {
             type: "results",
             products: result.data.products,
-            foundInOtherCategory: false,
+            foundInOtherCategory: result.differentCategory,
             count: result.data.count
           })
         ]);
@@ -237,14 +281,10 @@ export default function Chat() {
     } catch {
       setIsTyping(false);
       await pushWithDelay([botMsg(BOT.error)]);
-      await proceedToEmbeddingStep();
       await resetToStart();
     }
   };
 
-  /**
-   * 오타 보정 "아니오" 클릭 → 임베딩 검색 여부 질문
-   */
   const handleTypoNo = async (msgId: string) => {
     if (step !== "CONFIRM_TYPO") return;
     markUsed(msgId);
@@ -252,17 +292,11 @@ export default function Chat() {
     await proceedToEmbeddingStep();
   };
 
-  /**
-   * 3단계: 임베딩 검색 여부 질문
-   */
   const proceedToEmbeddingStep = async () => {
     setStep("CONFIRM_EMBEDDING");
     await pushWithDelay([botMsg(BOT.askEmbedding, { type: "confirm-embedding" })]);
   };
 
-  /**
-   * 임베딩 "예" 클릭 → 원본 검색어로 임베딩 검색
-   */
   const handleEmbeddingYes = async (msgId: string) => {
     if (step !== "CONFIRM_EMBEDDING") return;
     markUsed(msgId);
@@ -287,16 +321,11 @@ export default function Chat() {
     } catch {
       setIsTyping(false);
       await pushWithDelay([botMsg(BOT.error)]);
-      await resetToStart();
     }
 
-    // 임베딩 후 항상 처음으로
     await resetToStart();
   };
 
-  /**
-   * 임베딩 "아니오" 클릭 → 처음으로
-   */
   const handleEmbeddingNo = async (msgId: string) => {
     if (step !== "CONFIRM_EMBEDDING") return;
     markUsed(msgId);
@@ -316,6 +345,7 @@ export default function Chat() {
         return (
           <CategoryButtons
             onSelect={(cat) => handleCategory(cat, msg.id)}
+            onUnknown={() => handleUnknownCategory(msg.id)}
             disabled={msg.used ?? false}
           />
         );
@@ -345,6 +375,24 @@ export default function Chat() {
           <YesNoButtons
             onYes={() => handleEmbeddingYes(msg.id)}
             onNo={() => handleEmbeddingNo(msg.id)}
+            disabled={msg.used ?? false}
+          />
+        );
+      case "confirm-ocr":
+        return (
+          <YesNoButtons
+            onYes={() =>
+              handleOcrYes(
+                msg.id,
+                (msg.payload as { type: "confirm-ocr"; ocrQuery: string }).ocrQuery
+              )
+            }
+            onNo={() =>
+              handleOcrNo(
+                msg.id,
+                (msg.payload as { type: "confirm-ocr"; ocrQuery: string }).ocrQuery
+              )
+            }
             disabled={msg.used ?? false}
           />
         );
@@ -385,6 +433,25 @@ export default function Chat() {
       </div>
 
       <div className="px-4 py-3 border-t bg-white flex items-center gap-2">
+        {/* 이미지 첨부 버튼 (INPUT_QUERY 스텝에서만 활성화) */}
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageChange}
+        />
+        <button
+          onClick={() => imageInputRef.current?.click()}
+          disabled={step !== "INPUT_QUERY"}
+          className="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center
+                     hover:bg-gray-200 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed
+                     transition-all duration-150"
+          title="이미지로 검색"
+        >
+          <CameraIcon className="size-5" />
+        </button>
+
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}

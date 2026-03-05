@@ -8,7 +8,7 @@ export type ChatStep =
   | "CONFIRM_TYPO"
   | "CONFIRM_EMBEDDING"
   | "LOADING"
-  | "DONE";
+  | "CONFIRM_OCR";
 
 // chatscope에 넘길 메시지 + 커스텀 payload 타입
 export interface ChatMessage {
@@ -17,6 +17,7 @@ export interface ChatMessage {
   direction: "incoming" | "outgoing";
   payload?: MessagePayload;
   used?: boolean;
+  imageUrl?: string;
 }
 
 export type MessagePayload =
@@ -26,4 +27,5 @@ export type MessagePayload =
   | { type: "results"; products: RecallType[]; foundInOtherCategory?: boolean; count?: number }
   | { type: "no-result" }
   | { type: "confirm-typo" }
-  | { type: "confirm-embedding" };
+  | { type: "confirm-embedding" }
+  | { type: "confirm-ocr"; ocrQuery: string };

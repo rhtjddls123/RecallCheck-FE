@@ -3,11 +3,7 @@ import {
   RECALL_CATEGORY_KEY_TYPE
 } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
 import { api } from "@/lib/axios";
-import {
-  ChatbotSearchResponse,
-  CorrectTypoResponse,
-  EmbeddingSearchResponse
-} from "@/types/response.type";
+import { ChatbotSearchResponse, EmbeddingSearchResponse } from "@/types/response.type";
 
 interface chatbotSearchRecallParams {
   query: string;
@@ -20,15 +16,6 @@ export const recallApi = {
       params: {
         query: params.query,
         categoryId: params.category && RECALL_CATEGORY_KEY_MAP[params.category]
-      }
-    });
-
-    return res.data;
-  },
-  correctTypo: async (query: string): Promise<CorrectTypoResponse> => {
-    const res = await api.get<CorrectTypoResponse>("/recall/correct-typo", {
-      params: {
-        query
       }
     });
 
