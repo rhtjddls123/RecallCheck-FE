@@ -8,8 +8,7 @@ export type ChatStep =
   | "CONFIRM_TYPO"
   | "CONFIRM_EMBEDDING"
   | "LOADING"
-  | "CONFIRM_OCR"
-  | "EDIT_OCR";
+  | "CONFIRM_OCR";
 
 // chatscope에 넘길 메시지 + 커스텀 payload 타입
 export interface ChatMessage {
@@ -29,5 +28,4 @@ export type MessagePayload =
   | { type: "no-result" }
   | { type: "confirm-typo" }
   | { type: "confirm-embedding" }
-  | { type: "confirm-ocr" }
-  | { type: "edit-ocr" };
+  | { type: "confirm-ocr"; ocrQuery: string };
