@@ -28,3 +28,9 @@ export interface EmbeddingSearchResponse {
   found: boolean;
   data: RecallType[];
 }
+
+export interface ImageOcrResponse {
+  found: boolean;
+  message: string;
+  query: string | null;
+}
