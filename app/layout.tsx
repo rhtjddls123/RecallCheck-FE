@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body className={`flex justify-center`}>
         <main className=" relative h-dvh w-93.75">{children}</main>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
