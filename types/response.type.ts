@@ -9,3 +9,22 @@ export interface RecallPaginationResponse {
   hasNext: boolean;
   hasPrev: boolean;
 }
+
+export interface ChatbotSearchResponse {
+  found: boolean;
+  differentCategory: boolean;
+  data: {
+    products: RecallType[];
+    count: number;
+  };
+}
+
+export interface CorrectTypoResponse {
+  isSame: boolean;
+  corrected: string;
+}
+
+export interface EmbeddingSearchResponse {
+  found: boolean;
+  data: RecallType[];
+}
