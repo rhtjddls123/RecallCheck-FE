@@ -12,6 +12,7 @@ import { RECALL_CATEGORY_KEY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const"
 import { recallApi } from "@/services/recallService";
 import YesNoButtons from "./YesNoButtons";
 import SearchResults from "./SearchResults";
+import { openaiApi } from "@/services/openaiService";
 
 const BOT = {
   greeting: "안녕하세요! 리콜 제품 검색 서비스입니다",
@@ -176,7 +177,7 @@ export default function Chat() {
     setIsTyping(true);
     try {
       // LLM 오타 보정 API 호출
-      const typoResult = await recallApi.correctTypo(query);
+      const typoResult = await openaiApi.correctTypo(query);
       if (typoResult.isSame) {
         // 오타 보정 전후가 같은 경우
         setIsTyping(false);
