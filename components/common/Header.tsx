@@ -3,12 +3,13 @@ import Link from "next/link";
 
 interface HeaderProps {
   title?: string;
+  href?: string;
 }
 
-const Header = ({ title }: HeaderProps) => {
+const Header = ({ title, href }: HeaderProps) => {
   return (
     <header className="w-full h-11 py-2.5 px-5 flex justify-between items-center">
-      <Link href="/">
+      <Link href={href || "/"}>
         {/* 로고 아이콘 추후 추가 예정 */}
         <div className="w-6 h-6 bg-blue-400" />
       </Link>
