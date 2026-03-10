@@ -10,7 +10,6 @@ interface SearchResultsProps {
 }
 
 const SearchResults = ({ products, count, targetUrl }: SearchResultsProps) => {
-  console.log(count, targetUrl);
   return (
     <Carousel
       opts={{
