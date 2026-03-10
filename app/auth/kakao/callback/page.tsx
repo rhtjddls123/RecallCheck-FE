@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authApi } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 
-export default function KakaoCallback() {
+function KakaoCallbackInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setUser } = useAuthStore();
@@ -17,13 +17,21 @@ export default function KakaoCallback() {
     if (code) {
       authApi
         .kakaoLogin(code)
-        .then(() => authApi.getMe()) // 로그인 후 유저 정보 가져오기
+        .then(() => authApi.getMe())
         .then((user) => {
           setUser(user);
-          router.replace(redirectUrl); // 로그인 후 메인 또는 이전 페이지로 이동
+          router.replace(redirectUrl);
         });
     }
   }, [code, redirectUrl, router, setUser]);
 
   return <></>;
+}
+
+export default function KakaoCallback() {
+  return (
+    <Suspense fallback={null}>
+      <KakaoCallbackInner />
+    </Suspense>
+  );
 }
