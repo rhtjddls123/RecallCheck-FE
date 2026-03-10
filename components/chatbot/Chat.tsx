@@ -174,7 +174,7 @@ export default function Chat() {
       }
 
       await pushWithDelay([botMsg(BOT.notFound)]);
-      await proceedToTypoStep(query);
+      await proceedToTypoStep(query, path);
     } catch {
       setIsTyping(false);
       setPath("");
@@ -236,8 +236,9 @@ export default function Chat() {
     setStep("INPUT_QUERY");
   };
 
-  const proceedToTypoStep = async (query: string) => {
+  const proceedToTypoStep = async (query: string, path?: string) => {
     setIsTyping(true);
+    if (path) setPath(path);
     try {
       const typoResult = await openaiApi.correctTypo(query);
       if (typoResult.isSame) {
