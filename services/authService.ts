@@ -1,4 +1,6 @@
+import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 import { api } from "@/lib/axios";
+import { GetActivityResponse } from "@/types/response.type";
 
 export const authApi = {
   kakaoLogin: async (code: string) => {
@@ -18,6 +20,16 @@ export const authApi = {
 
   deleteAccount: async () => {
     const response = await api.delete("/auth");
+    return response.data;
+  },
+
+  getActivity: async (type: LogTypeEnum, cursorId?: number) => {
+    const response = await api.get<GetActivityResponse>(`/auth/activity`, {
+      params: {
+        type,
+        cursorId
+      }
+    });
     return response.data;
   }
 };
