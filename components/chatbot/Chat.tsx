@@ -48,6 +48,7 @@ export default function Chat() {
   const [selectedSub, setSelectedSub] = useState<RECALL_CATEGORY_KEY_TYPE | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [input, setInput] = useState("");
+  const [path, setPath] = useState("");
 
   const [originalQuery, setOriginalQuery] = useState("");
   const [correctedQuery, setCorrectedQuery] = useState("");
@@ -133,19 +134,22 @@ export default function Chat() {
     if (step !== "INPUT_QUERY" || !query) return;
 
     setInput("");
-    await searchWithQuery(query);
+    await searchWithQuery(query, path);
+    setPath("");
   };
 
-  const searchWithQuery = async (query: string) => {
+  const searchWithQuery = async (query: string, path?: string) => {
     setOriginalQuery(query);
     push(userMsg(query));
+    if (path) setPath(path);
     setStep("LOADING");
     setIsTyping(true);
 
     try {
       const result = await recallApi.chatbotSearchRecall({
         query,
-        category: selectedSub ?? undefined
+        category: selectedSub ?? undefined,
+        path
       });
 
       setIsTyping(false);
@@ -160,10 +164,12 @@ export default function Chat() {
             type: "results",
             products: result.data.products,
             foundInOtherCategory: result.differentCategory,
-            count: result.data.count
+            count: result.data.count,
+            targetUrl: result.data.targetUrl
           })
         ]);
         await resetToStart();
+        setPath("");
         return;
       }
 
@@ -171,6 +177,7 @@ export default function Chat() {
       await proceedToTypoStep(query);
     } catch {
       setIsTyping(false);
+      setPath("");
       await pushWithDelay([botMsg(BOT.error)]);
       await resetToStart();
     }
@@ -188,7 +195,7 @@ export default function Chat() {
       const result = await openaiApi.imageOcr(file);
       setIsTyping(false);
 
-      if (!result.found || !result.query) {
+      if (!result.found || !result.query || !result.path) {
         // OCR 실패 → message 출력 + 다시 입력 안내, INPUT_QUERY 유지
         await pushWithDelay([botMsg(result.message), botMsg(BOT.ocrRetry)]);
         setStep("INPUT_QUERY");
@@ -198,7 +205,11 @@ export default function Chat() {
       // OCR 성공 → query 확인 질문
       setStep("CONFIRM_OCR");
       await pushWithDelay([
-        botMsg(BOT.ocrConfirm(result.query), { type: "confirm-ocr", ocrQuery: result.query })
+        botMsg(BOT.ocrConfirm(result.query), {
+          type: "confirm-ocr",
+          ocrQuery: result.query,
+          path: result.path
+        })
       ]);
     } catch {
       setIsTyping(false);
@@ -208,18 +219,19 @@ export default function Chat() {
   };
 
   // OCR "예" → 바로 검색
-  const handleOcrYes = async (msgId: string, ocrQuery: string) => {
+  const handleOcrYes = async (msgId: string, ocrQuery: string, path: string) => {
     if (step !== "CONFIRM_OCR") return;
     markUsed(msgId);
     push(userMsg("예"));
-    await searchWithQuery(ocrQuery);
+    await searchWithQuery(ocrQuery, path);
   };
 
   // OCR "아니오" → input에 query 입력해두고 수정 가능하게
-  const handleOcrNo = async (msgId: string, ocrQuery: string) => {
+  const handleOcrNo = async (msgId: string, ocrQuery: string, path: string) => {
     if (step !== "CONFIRM_OCR") return;
     markUsed(msgId);
     push(userMsg("아니오"));
+    setPath(path);
     setInput(ocrQuery);
     setStep("INPUT_QUERY");
   };
@@ -251,44 +263,15 @@ export default function Chat() {
     setStep("LOADING");
     setIsTyping(true);
 
-    try {
-      const result = await recallApi.chatbotSearchRecall({
-        query: correctedQuery,
-        category: selectedSub ?? undefined
-      });
-
-      setIsTyping(false);
-
-      if (result.found) {
-        const message = result.differentCategory ? BOT.foundOtherCategory : BOT.found;
-        if (result.differentCategory) {
-          await pushWithDelay([botMsg(BOT.notFoundInCategory)]);
-        }
-        await pushWithDelay([
-          botMsg(message, {
-            type: "results",
-            products: result.data.products,
-            foundInOtherCategory: result.differentCategory,
-            count: result.data.count
-          })
-        ]);
-        await resetToStart();
-        return;
-      }
-
-      await pushWithDelay([botMsg(BOT.notFound)]);
-      await proceedToEmbeddingStep();
-    } catch {
-      setIsTyping(false);
-      await pushWithDelay([botMsg(BOT.error)]);
-      await resetToStart();
-    }
+    await searchWithQuery(correctedQuery, path);
+    setPath("");
   };
 
   const handleTypoNo = async (msgId: string) => {
     if (step !== "CONFIRM_TYPO") return;
     markUsed(msgId);
     push(userMsg("아니오"));
+    setPath("");
     await proceedToEmbeddingStep();
   };
 
@@ -312,7 +295,8 @@ export default function Chat() {
         await pushWithDelay([
           botMsg(BOT.foundEmbedding, {
             type: "results",
-            products: result.data
+            products: result.data,
+            targetUrl: null
           })
         ]);
       } else {
@@ -359,7 +343,13 @@ export default function Chat() {
           />
         );
       case "results":
-        return <SearchResults products={msg.payload.products} count={msg.payload.count} />;
+        return (
+          <SearchResults
+            products={msg.payload.products}
+            count={msg.payload.count}
+            targetUrl={msg.payload.targetUrl}
+          />
+        );
       case "query-cancel":
         return <CancelButton onCancel={() => handleCancel(msg.id)} disabled={msg.used ?? false} />;
       case "confirm-typo":
@@ -384,13 +374,15 @@ export default function Chat() {
             onYes={() =>
               handleOcrYes(
                 msg.id,
-                (msg.payload as { type: "confirm-ocr"; ocrQuery: string }).ocrQuery
+                (msg.payload as { type: "confirm-ocr"; ocrQuery: string; path: string }).ocrQuery,
+                (msg.payload as { type: "confirm-ocr"; ocrQuery: string; path: string }).path
               )
             }
             onNo={() =>
               handleOcrNo(
                 msg.id,
-                (msg.payload as { type: "confirm-ocr"; ocrQuery: string }).ocrQuery
+                (msg.payload as { type: "confirm-ocr"; ocrQuery: string }).ocrQuery,
+                (msg.payload as { type: "confirm-ocr"; ocrQuery: string; path: string }).path
               )
             }
             disabled={msg.used ?? false}

@@ -16,6 +16,7 @@ export interface ChatbotSearchResponse {
   data: {
     products: RecallType[];
     count: number;
+    targetUrl: string | null;
   };
 }
 
@@ -33,4 +34,5 @@ export interface ImageOcrResponse {
   found: boolean;
   message: string;
   query: string | null;
+  path: string | null;
 }

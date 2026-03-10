@@ -6,9 +6,11 @@ import Link from "next/link";
 interface SearchResultsProps {
   products: RecallType[];
   count?: number;
+  targetUrl: string | null;
 }
 
-const SearchResults = ({ products, count }: SearchResultsProps) => {
+const SearchResults = ({ products, count, targetUrl }: SearchResultsProps) => {
+  console.log(count, targetUrl);
   return (
     <Carousel
       opts={{
@@ -16,10 +18,10 @@ const SearchResults = ({ products, count }: SearchResultsProps) => {
       }}
       className="w-full mt-2"
     >
-      {count && (
+      {count && targetUrl && (
         <div className="pl-2 flex gap-1 text-12_M">
           <p>총 {count}개의 결과가 존재합니다.</p>
-          <Link href={""} className="underline">
+          <Link href={targetUrl} className="underline">
             전체보기
           </Link>
         </div>
