@@ -5,7 +5,7 @@ const NAV_ITEM = [
   { href: "/", name: "홈", Icon: HomeIcon },
   { href: "/chat", name: "챗봇", Icon: MessageCircleMoreIcon },
   { href: "/recall", name: "리콜제품", Icon: ListIcon },
-  { href: "/recent", name: "최근 활동", Icon: ClockIcon },
+  { href: "/activity", name: "최근 활동", Icon: ClockIcon },
   { href: "/setting", name: "설정", Icon: SettingsIcon }
 ];
 
