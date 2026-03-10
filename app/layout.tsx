@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
 import AuthProvider from "@/components/common/AuthProvider";
+import QueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,11 +18,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`flex justify-center`}>
-        <AuthProvider>
-          <main className=" relative h-dvh w-93.75">{children}</main>
-        </AuthProvider>
-        <Toaster />
-        <Analytics />
+        <QueryProvider>
+          <AuthProvider>
+            <main className=" relative h-dvh w-93.75">{children}</main>
+          </AuthProvider>
+          <Toaster />
+          <Analytics />
+        </QueryProvider>
       </body>
     </html>
   );
