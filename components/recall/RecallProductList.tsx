@@ -2,6 +2,7 @@ import { fetchWithParams } from "@/lib/fetchWithParams";
 import RecallItem, { RecallItemSkeleton } from "../common/RecallItem";
 import RecallPagination from "./RecallPagination";
 import { RecallPaginationResponse } from "@/types/response.type";
+import { cookies } from "next/headers";
 
 export const RecallProductListLoadingFallback = () => {
   return (
@@ -20,9 +21,11 @@ interface RecallProductListProps {
 }
 
 const RecallProductList = async ({ filters }: RecallProductListProps) => {
+  const cookieStore = await cookies();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetchWithParams(`${baseUrl}/recall`, filters, {
-    cache: "no-store"
+    cache: "no-store",
+    headers: { Cookie: cookieStore.toString() }
   });
   const recallData = (await res.json()) as RecallPaginationResponse;
 
