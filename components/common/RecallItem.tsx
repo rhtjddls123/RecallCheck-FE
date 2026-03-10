@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
+import ImageWithDefault from "./ImageWithDefault";
 
 export const RecallItemSkeleton = () => {
   return (
@@ -25,7 +26,7 @@ interface RecallItemProps {
 const RecallItem = ({ description, href, title, alt, img }: RecallItemProps) => {
   return (
     <Link href={href} className="flex flex-col gap-3 w-33">
-      <img src={img || "/defaultImg.jpeg"} alt={alt} className="size-33 rounded-2xl object-cover" />
+      <ImageWithDefault src={img} alt={alt} className="size-33 rounded-2xl object-cover" />
 
       <div className="flex flex-col gap-2 justify-center px-2">
         <h3 className="select-none text-16_B text-gray-950 w-full truncate">{title}</h3>
