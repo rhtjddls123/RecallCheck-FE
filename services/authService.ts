@@ -31,5 +31,11 @@ export const authApi = {
       }
     });
     return response.data;
+  },
+
+  deleteActivity: async (logId: number) => {
+    const response = await api.delete(`/auth/activity/${logId}`);
+
+    return response.data;
   }
 };
