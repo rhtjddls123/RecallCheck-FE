@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
+import ImageWithDefault from "../common/ImageWithDefault";
 
 interface SafetyInfoCardProps {
   title: string;
@@ -11,7 +12,7 @@ interface SafetyInfoCardProps {
 const SafetyInfoCard = ({ title, description, img, href }: SafetyInfoCardProps) => {
   return (
     <Link target="_blank" href={href} className="flex gap-3 justify-center items-center">
-      <img className="size-19.25 rounded-2xl object-cover" src={img} alt={title} />
+      <ImageWithDefault className="size-19.25 rounded-2xl object-cover" src={img} alt={title} />
 
       <div className="flex flex-col gap-1.5 justify-center items-center">
         <h3 className="w-63.5 text-18_B text-gray-950 truncate">{title}</h3>

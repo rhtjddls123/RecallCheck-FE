@@ -1,6 +1,7 @@
 import { RECALL_CATEGORY_MAP, RECALL_CATEGORY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
 import { RecallType } from "@/types/recall.type";
 import Link from "next/link";
+import ImageWithDefault from "../common/ImageWithDefault";
 
 interface RecallResultCardProps {
   product: RecallType;
@@ -41,8 +42,8 @@ const RecallResultCard = ({ product, foundInOtherCategory }: RecallResultCardPro
             <p className="font-semibold text-gray-900 text-sm truncate">{product.productNm}</p>
             <p className="text-xs text-gray-400 h-4 truncate">{product.makr || product.bsnmNm}</p>
           </div>
-          <img
-            src={product.recallImgUrls?.[0] || "/defaultImg.jpeg"}
+          <ImageWithDefault
+            src={product.recallImgUrls?.[0]}
             alt={product.productNm}
             className="size-9 rounded-sm object-cover"
           />
