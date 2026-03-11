@@ -24,6 +24,7 @@ const RecallProductHeader = ({ recallDetail }: RecallProductHeaderProps) => {
   )
     return <MedicineProductHeader {...recallDetail} />; // 의약품, 의약외품
   if (recallDetail.cntntsId === "0207") return <MedicalDeviceProductHeader {...recallDetail} />; // 의료기기
+  if (recallDetail.cntntsId === "0208") return <HygieneProductHeader {...recallDetail} />; // 위생용품
   return;
 };
 
@@ -147,6 +148,58 @@ const MedicalDeviceProductHeader = ({
     <div className="p-4 flex flex-col gap-5 bg-white">
       <h2 className="text-18_B text-gray-800">{productNm}</h2>
       <HeaderBaseTable data={tableData} />
+    </div>
+  );
+};
+
+const HygieneProductHeader = ({
+  productNm,
+  cntntsId,
+  makr,
+  mnfcturPd,
+  bsnmNm,
+  modlNmInfo,
+  recallImgUrls
+}: RecallType) => {
+  const tableData: { title: string; description: string | null }[] = [
+    { title: "카테고리", description: RECALL_CATEGORY_MAP[cntntsId] },
+    { title: "사업자명", description: bsnmNm },
+    { title: "제조사", description: makr },
+    { title: "제조연월일", description: mnfcturPd },
+    { title: "모델명", description: modlNmInfo }
+  ];
+
+  return (
+    <div className="p-4 flex flex-col gap-5 bg-white">
+      <Carousel>
+        <CarouselContent>
+          {recallImgUrls && recallImgUrls.length > 0 ? (
+            recallImgUrls.map((item) => (
+              <CarouselItem key={item}>
+                <ImageWithDefault
+                  src={item}
+                  className="rounded-2xl object-cover max-h-85.75 w-85.75"
+                />
+              </CarouselItem>
+            ))
+          ) : (
+            <CarouselItem>
+              <ImageWithDefault className="rounded-2xl object-cover" />
+            </CarouselItem>
+          )}
+        </CarouselContent>
+        {recallImgUrls && recallImgUrls.length > 1 && (
+          <>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </>
+        )}
+      </Carousel>
+
+      <div className="flex flex-col gap-5">
+        <h2 className="text-18_B text-gray-800">{productNm}</h2>
+        <HeaderBaseTable data={tableData} />
+      </div>
     </div>
   );
 };
