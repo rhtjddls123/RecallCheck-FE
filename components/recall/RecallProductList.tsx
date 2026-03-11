@@ -23,12 +23,16 @@ interface RecallProductListProps {
 
 const RecallProductList = async ({ filters, isChatbot = false }: RecallProductListProps) => {
   const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const url = `${baseUrl}/recall${isChatbot ? "/chatbot-search/paginated" : ""}`;
-  console.log(url);
   const res = await fetchWithParams(`${url}`, filters, {
     cache: "no-store",
-    headers: { Cookie: cookieStore.toString() }
+    headers: { Cookie: cookieHeader }
   });
   const recallData = (await res.json()) as RecallPaginationResponse;
 

@@ -10,11 +10,17 @@ interface RecallProductInfoProps {
 
 const RecallProductInfo = async ({ recallSn }: RecallProductInfoProps) => {
   const cookieStore = await cookies();
+
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join("; ");
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetch(`${baseUrl}/recall/${recallSn}`, {
     cache: "no-store",
     headers: {
-      Cookie: cookieStore.toString()
+      Cookie: cookieHeader
     }
   });
   const recallDetail = (await res.json()) as RecallType;
