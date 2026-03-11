@@ -23,6 +23,7 @@ const RecallProductInfo = async ({ recallSn }: RecallProductInfoProps) => {
       Cookie: cookieHeader
     }
   });
+  console.log("배포 쿠키:", cookieHeader);
   const recallDetail = (await res.json()) as RecallType;
 
   return (
