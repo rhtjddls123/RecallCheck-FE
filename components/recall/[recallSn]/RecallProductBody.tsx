@@ -12,6 +12,7 @@ const RecallProductBody = ({ recallDetail }: RecallProductBodyProps) => {
   if (recallDetail.cntntsId === "0301") return <AutomobileProductBody {...recallDetail} />; // 자동차
   if (recallDetail.cntntsId === "0204" || recallDetail.cntntsId === "0205")
     return <MedicineProductBody {...recallDetail} />; //의약품, 의약외품
+  if (recallDetail.cntntsId === "0207") return <MedicalDeviceProductBody {...recallDetail} />; // 의료기기
 };
 
 const IndustrialProductBody = ({
@@ -155,6 +156,55 @@ const MedicineProductBody = ({
     <div className="p-4 bg-white flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
+      </BodyBaseSection>
+
+      <BodyBaseSection title="문의처, 업체주소">
+        <p className="text-14_M">{recallEntrpsInfo}</p>
+      </BodyBaseSection>
+
+      <BodyBaseSection title="정보 제공 기관">
+        <div className="flex flex-col gap-1">
+          <p className="text-14_M">{infoOriginInstt || "-"}</p>
+          {infoOriginInsttUrl && (
+            <Link href={infoOriginInsttUrl} target="_blank" className="text-14_M underline">
+              {infoOriginInsttUrl}
+            </Link>
+          )}
+        </div>
+      </BodyBaseSection>
+    </div>
+  );
+};
+
+const MedicalDeviceProductBody = ({
+  recallSe,
+  hrmflGrad,
+  recallPublictBgnde,
+  recallPublictEndde,
+  infoOriginInstt,
+  recallBgnde,
+  recallEndde,
+  recallEntrpsInfo,
+  infoOriginInsttUrl
+}: RecallType) => {
+  const tableData: { title: string; description: string | null | string[] }[] = [
+    { title: "리콜구분", description: recallSe },
+    { title: "위해성", description: hrmflGrad },
+    {
+      title: "리콜 공표기간",
+      description: `${recallPublictBgnde || ""} ~ ${recallPublictEndde || ""}`
+    },
+    { title: "출처", description: infoOriginInstt }
+  ];
+
+  return (
+    <div className="p-4 bg-white flex flex-col gap-5">
+      <BodyBaseSection title="리콜이유">
+        <BodyBaseTable data={tableData} />
+      </BodyBaseSection>
+
+      <BodyBaseSection title="리콜 기간">
+        <p className="text-14_M">{`${recallBgnde || ""} ~ ${recallEndde || ""}`}</p>
       </BodyBaseSection>
 
       <BodyBaseSection title="문의처, 업체주소">

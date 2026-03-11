@@ -19,6 +19,7 @@ const RecallProductHeader = ({ recallDetail }: RecallProductHeaderProps) => {
   if (recallDetail.cntntsId === "0301") return <AutomobileProductHeader {...recallDetail} />; // 자동차
   if (recallDetail.cntntsId === "0204" || recallDetail.cntntsId === "0205")
     return <MedicineProductHeader {...recallDetail} />; // 의약품, 의약외품
+  if (recallDetail.cntntsId === "0207") return <MedicalDeviceProductHeader {...recallDetail} />; // 의료기기
   return;
 };
 
@@ -114,14 +115,56 @@ const MedicineProductHeader = ({
   );
 };
 
-const HeaderBaseTable = ({ data }: { data: { title: string; description: string | null }[] }) => {
+const MedicalDeviceProductHeader = ({
+  productNm,
+  cntntsId,
+  makr,
+  modlNmInfo,
+  mnfcturNoInfo,
+  mdlpClNo,
+  prmisnNo
+}: RecallType) => {
+  const modlNmInfoArray = modlNmInfo?.split("§") || [];
+  const mnfcturNoInfoArray = mnfcturNoInfo?.split("§") || [];
+
+  const merged = modlNmInfoArray.map((modl, i) => {
+    const mnfctur = mnfcturNoInfoArray[i]?.trim();
+    return mnfctur ? `${modl.trim()} / ${mnfctur}` : modl.trim();
+  });
+
+  const tableData: { title: string; description: string | null | string[] }[] = [
+    { title: "카테고리", description: RECALL_CATEGORY_MAP[cntntsId] },
+    { title: "제조사", description: makr },
+    { title: "모델명 / 제조번호", description: merged },
+    { title: "분류번호", description: mdlpClNo },
+    { title: "입허가번호", description: prmisnNo }
+  ];
+  return (
+    <div className="p-4 flex flex-col gap-5 bg-white">
+      <h2 className="text-18_B text-gray-800">{productNm}</h2>
+      <HeaderBaseTable data={tableData} />
+    </div>
+  );
+};
+
+const HeaderBaseTable = ({
+  data
+}: {
+  data: { title: string; description: string | null | string[] }[];
+}) => {
   return (
     <table className="w-full border-collapse">
       <tbody>
         {data.map((v) => (
           <tr key={v.title} className="border-t border-gray-200">
-            <td className="py-2 pr-4 text-gray-700 whitespace-nowrap w-32 text-14_B">{v.title}</td>
-            <td className="py-2 text-gray-700 text-12_M break-all">{v.description || "-"}</td>
+            <td className="py-2 pr-4 text-gray-700 whitespace-nowrap w-30 text-14_B">{v.title}</td>
+            <td className="py-2 text-gray-700 text-12_M break-all flex flex-col gap-1">
+              {Array.isArray(v.description)
+                ? v.description.length > 0
+                  ? v.description.map((item) => <p key={item}>{item}</p>)
+                  : "-"
+                : v.description || "-"}
+            </td>
           </tr>
         ))}
       </tbody>
