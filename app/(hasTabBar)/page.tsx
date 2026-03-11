@@ -8,6 +8,8 @@ import RecentRecallCarousel, {
 } from "@/components/Home/RecentRecallCarousel";
 import SafetyInfoList, { SafetyInfoListLoadingFallback } from "@/components/Home/SafetyInfoList";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -19,7 +21,9 @@ export default function Home() {
         <div className="flex flex-col gap-2.5">
           {/* 검색창 영역 */}
           <section className="px-4 py-1.25 bg-white">
-            <SearchInput />
+            <Suspense fallback={<Skeleton className="w-full h-9" />}>
+              <SearchInput />
+            </Suspense>
           </section>
 
           {/* 배너 영역 */}
@@ -35,7 +39,7 @@ export default function Home() {
           </HomeSectionWrapper>
 
           {/* 안전 정보 영역 */}
-          <HomeSectionWrapper title="안전정보" href="/safetyInfo">
+          <HomeSectionWrapper title="안전정보">
             <SuspenseWithErrorBoundary loadingFallback={<SafetyInfoListLoadingFallback />}>
               <SafetyInfoList />
             </SuspenseWithErrorBoundary>

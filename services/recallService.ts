@@ -7,6 +7,7 @@ import { ChatbotSearchResponse, EmbeddingSearchResponse } from "@/types/response
 
 interface chatbotSearchRecallParams {
   query: string;
+  path?: string;
   category?: RECALL_CATEGORY_KEY_TYPE;
 }
 
@@ -15,7 +16,8 @@ export const recallApi = {
     const res = await api.get<ChatbotSearchResponse>("/recall/chatbot-search", {
       params: {
         query: params.query,
-        categoryId: params.category && RECALL_CATEGORY_KEY_MAP[params.category]
+        categoryId: params.category && RECALL_CATEGORY_KEY_MAP[params.category],
+        path: params.path
       }
     });
 

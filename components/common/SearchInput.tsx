@@ -3,17 +3,35 @@
 import { FormEvent, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { SearchIcon, XIcon } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SearchInput = () => {
   const [focused, setFocused] = useState(false);
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const xButtonRef = useRef<HTMLButtonElement | null>(null);
+  const router = useRouter();
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const query = inputRef.current?.value;
+    if (!query) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("query", query);
+    params.set("page", "1");
+
+    router.push(`/recall?${params.toString()}`);
   };
 
   const onDelete = () => {
     if (inputRef.current?.value) inputRef.current.value = "";
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("query");
+    params.set("page", "1");
+
+    router.push(`/recall?${params.toString()}`);
     inputRef.current?.blur();
     xButtonRef.current?.blur();
   };
@@ -33,6 +51,7 @@ const SearchInput = () => {
         placeholder="검색어를 입력하세요"
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        defaultValue={query || ""}
       />
       <button type="button" onClick={onDelete} ref={xButtonRef}>
         <XIcon className={cn("size-5", !focused && "opacity-0")} />

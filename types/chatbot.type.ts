@@ -24,8 +24,14 @@ export type MessagePayload =
   | { type: "category-buttons" }
   | { type: "subcategory-buttons"; category: MainCategory }
   | { type: "query-cancel" }
-  | { type: "results"; products: RecallType[]; foundInOtherCategory?: boolean; count?: number }
+  | {
+      type: "results";
+      products: RecallType[];
+      foundInOtherCategory?: boolean;
+      count?: number;
+      targetUrl: string | null;
+    }
   | { type: "no-result" }
   | { type: "confirm-typo" }
   | { type: "confirm-embedding" }
-  | { type: "confirm-ocr"; ocrQuery: string };
+  | { type: "confirm-ocr"; ocrQuery: string; path: string };

@@ -2,6 +2,7 @@ import { fetchWithParams } from "@/lib/fetchWithParams";
 import RecallItem, { RecallItemSkeleton } from "../common/RecallItem";
 import RecallPagination from "./RecallPagination";
 import { RecallPaginationResponse } from "@/types/response.type";
+import { cookies } from "next/headers";
 
 export const RecallProductListLoadingFallback = () => {
   return (
@@ -17,12 +18,17 @@ export const RecallProductListLoadingFallback = () => {
 
 interface RecallProductListProps {
   filters: { [key: string]: string | string[] | undefined };
+  isChatbot?: boolean;
 }
 
-const RecallProductList = async ({ filters }: RecallProductListProps) => {
+const RecallProductList = async ({ filters, isChatbot = false }: RecallProductListProps) => {
+  const cookieStore = await cookies();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetchWithParams(`${baseUrl}/recall`, filters, {
-    cache: "no-store"
+  const url = `${baseUrl}/recall${isChatbot ? "/chatbot-search/paginated" : ""}`;
+  console.log(url);
+  const res = await fetchWithParams(`${url}`, filters, {
+    cache: "no-store",
+    headers: { Cookie: cookieStore.toString() }
   });
   const recallData = (await res.json()) as RecallPaginationResponse;
 

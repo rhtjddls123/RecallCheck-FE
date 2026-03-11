@@ -37,7 +37,7 @@ const RecentRecallCarousel = async () => {
         {recalls.map((recall) => (
           <CarouselItem key={recall.recallSn} className="p-0 basis-33">
             <RecallItem
-              href=""
+              href={`/recall/${recall.recallSn}`}
               title={recall.productNm}
               description={recall.bsnmNm || recall.makr || ""}
               img={recall.recallImgUrls.length > 0 ? recall.recallImgUrls[0] : "/defaultImg.jpeg"}

@@ -1,4 +1,5 @@
 import { RecallType } from "./recall.type";
+import { UserLogType } from "./user.type";
 
 export interface RecallPaginationResponse {
   data: RecallType[];
@@ -16,6 +17,7 @@ export interface ChatbotSearchResponse {
   data: {
     products: RecallType[];
     count: number;
+    targetUrl: string | null;
   };
 }
 
@@ -33,4 +35,13 @@ export interface ImageOcrResponse {
   found: boolean;
   message: string;
   query: string | null;
+  path: string | null;
+}
+
+export interface GetActivityResponse {
+  data: UserLogType[];
+  count: number;
+  cursorId: number | null;
+  hasNextPage: boolean;
+  next: string | null;
 }
