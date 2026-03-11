@@ -30,6 +30,7 @@ const RecallProductHeader = ({ recallDetail }: RecallProductHeaderProps) => {
   if (recallDetail.cntntsId === "0207") return <MedicalDeviceProductHeader {...recallDetail} />; // 의료기기
   if (recallDetail.cntntsId === "0208") return <HygieneProductHeader {...recallDetail} />; // 위생용품
   if (recallDetail.cntntsId === "0405") return <DailyRadiationProductHeader {...recallDetail} />; // 생활방사선제품
+  if (recallDetail.cntntsId === "0401") return <ConsumerChemicalProductHeader {...recallDetail} />; // 생활화학제품
   return;
 };
 
@@ -257,6 +258,20 @@ const DailyRadiationProductHeader = ({
         <h2 className="text-18_B text-gray-800">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
       </div>
+    </div>
+  );
+};
+
+const ConsumerChemicalProductHeader = ({ productNm, cntntsId, bsnmNm, modlNmInfo }: RecallType) => {
+  const tableData: { title: string; description: string | null | string[] }[] = [
+    { title: "카테고리", description: RECALL_CATEGORY_MAP[cntntsId] },
+    { title: "사업자명", description: bsnmNm },
+    { title: "모델명", description: modlNmInfo }
+  ];
+  return (
+    <div className="p-4 flex flex-col gap-5 bg-white">
+      <h2 className="text-18_B text-gray-800">{productNm}</h2>
+      <HeaderBaseTable data={tableData} />
     </div>
   );
 };
