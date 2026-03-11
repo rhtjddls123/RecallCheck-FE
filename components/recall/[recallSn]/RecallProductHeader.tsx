@@ -14,8 +14,11 @@ interface RecallProductHeaderProps {
 }
 
 const RecallProductHeader = ({ recallDetail }: RecallProductHeaderProps) => {
-  if (recallDetail.cntntsId === "0101") return <IndustrialProductHeader {...recallDetail} />; // 공산품
+  if (recallDetail.cntntsId === "0101" || recallDetail.cntntsId === "0203")
+    return <IndustrialProductHeader {...recallDetail} />; // 공산품, 축산물(항목이 없음)
   if (recallDetail.cntntsId === "0301") return <AutomobileProductHeader {...recallDetail} />; // 자동차
+  if (recallDetail.cntntsId === "0204" || recallDetail.cntntsId === "0205")
+    return <MedicineProductHeader {...recallDetail} />; // 의약품, 의약외품
   return;
 };
 
@@ -90,6 +93,27 @@ const AutomobileProductHeader = ({
   );
 };
 
+const MedicineProductHeader = ({
+  productNm,
+  cntntsId,
+  makr,
+  mnfcturPd,
+  mnfcturNoInfo
+}: RecallType) => {
+  const tableData: { title: string; description: string | null }[] = [
+    { title: "카테고리", description: RECALL_CATEGORY_MAP[cntntsId] },
+    { title: "제조사", description: makr },
+    { title: "제조연월일", description: mnfcturPd },
+    { title: "제조번호", description: mnfcturNoInfo }
+  ];
+  return (
+    <div className="p-4 flex flex-col gap-5 bg-white">
+      <h2 className="text-18_B text-gray-800">{productNm}</h2>
+      <HeaderBaseTable data={tableData} />
+    </div>
+  );
+};
+
 const HeaderBaseTable = ({ data }: { data: { title: string; description: string | null }[] }) => {
   return (
     <table className="w-full border-collapse">
@@ -97,7 +121,7 @@ const HeaderBaseTable = ({ data }: { data: { title: string; description: string 
         {data.map((v) => (
           <tr key={v.title} className="border-t border-gray-200">
             <td className="py-2 pr-4 text-gray-700 whitespace-nowrap w-32 text-14_B">{v.title}</td>
-            <td className="py-2 text-gray-700 text-12_M">{v.description}</td>
+            <td className="py-2 text-gray-700 text-12_M break-all">{v.description || "-"}</td>
           </tr>
         ))}
       </tbody>

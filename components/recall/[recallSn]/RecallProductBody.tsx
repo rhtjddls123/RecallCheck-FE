@@ -7,10 +7,11 @@ interface RecallProductBodyProps {
 }
 
 const RecallProductBody = ({ recallDetail }: RecallProductBodyProps) => {
-  if (recallDetail.cntntsId === "0101") return <IndustrialProductBody {...recallDetail} />; // 공산품
+  if (recallDetail.cntntsId === "0101" || recallDetail.cntntsId === "0203")
+    return <IndustrialProductBody {...recallDetail} />; // 공산품, 축산물(항목이 없음)
   if (recallDetail.cntntsId === "0301") return <AutomobileProductBody {...recallDetail} />; // 자동차
-
-  return;
+  if (recallDetail.cntntsId === "0204" || recallDetail.cntntsId === "0205")
+    return <MedicineProductBody {...recallDetail} />; //의약품, 의약외품
 };
 
 const IndustrialProductBody = ({
@@ -115,6 +116,49 @@ const AutomobileProductBody = ({
       </BodyBaseSection>
       <BodyBaseSection title="기타 정보">
         <p className="text-14_M" dangerouslySetInnerHTML={{ __html: etcInfo || "-" }} />
+      </BodyBaseSection>
+
+      <BodyBaseSection title="정보 제공 기관">
+        <div className="flex flex-col gap-1">
+          <p className="text-14_M">{infoOriginInstt || "-"}</p>
+          {infoOriginInsttUrl && (
+            <Link href={infoOriginInsttUrl} target="_blank" className="text-14_M underline">
+              {infoOriginInsttUrl}
+            </Link>
+          )}
+        </div>
+      </BodyBaseSection>
+    </div>
+  );
+};
+
+const MedicineProductBody = ({
+  recallSe,
+  recallPublictBgnde,
+  recallPublictEndde,
+  infoOriginInstt,
+  shrtcomCn,
+  infoOriginInsttUrl,
+  recallEntrpsInfo
+}: RecallType) => {
+  const tableData: { title: string; description: string | null | string[] }[] = [
+    { title: "리콜구분", description: recallSe },
+    {
+      title: "리콜 공표기간",
+      description: `${recallPublictBgnde || ""} ~ ${recallPublictEndde || ""}`
+    },
+    { title: "출처", description: infoOriginInstt },
+    { title: "결함의 내용", description: shrtcomCn }
+  ];
+
+  return (
+    <div className="p-4 bg-white flex flex-col gap-5">
+      <BodyBaseSection title="리콜이유">
+        <BodyBaseTable data={tableData} />
+      </BodyBaseSection>
+
+      <BodyBaseSection title="문의처, 업체주소">
+        <p className="text-14_M">{recallEntrpsInfo}</p>
       </BodyBaseSection>
 
       <BodyBaseSection title="정보 제공 기관">
