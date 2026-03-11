@@ -10,7 +10,11 @@ const RecallProductBody = ({ recallDetail }: RecallProductBodyProps) => {
   if (recallDetail.cntntsId === "0101" || recallDetail.cntntsId === "0203")
     return <IndustrialProductBody {...recallDetail} />; // 공산품, 축산물(항목이 없음)
   if (recallDetail.cntntsId === "0301") return <AutomobileProductBody {...recallDetail} />; // 자동차
-  if (recallDetail.cntntsId === "0204" || recallDetail.cntntsId === "0205")
+  if (
+    recallDetail.cntntsId === "0204" ||
+    recallDetail.cntntsId === "0205" ||
+    recallDetail.cntntsId === "0206"
+  )
     return <MedicineProductBody {...recallDetail} />; //의약품, 의약외품
   if (recallDetail.cntntsId === "0207") return <MedicalDeviceProductBody {...recallDetail} />; // 의료기기
 };
