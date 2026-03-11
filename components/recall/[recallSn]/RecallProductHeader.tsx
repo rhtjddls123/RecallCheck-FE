@@ -31,6 +31,8 @@ const RecallProductHeader = ({ recallDetail }: RecallProductHeaderProps) => {
   if (recallDetail.cntntsId === "0208") return <HygieneProductHeader {...recallDetail} />; // 위생용품
   if (recallDetail.cntntsId === "0405") return <DailyRadiationProductHeader {...recallDetail} />; // 생활방사선제품
   if (recallDetail.cntntsId === "0401") return <ConsumerChemicalProductHeader {...recallDetail} />; // 생활화학제품
+  if (recallDetail.cntntsId === "0201" || recallDetail.cntntsId === "0202")
+    return <FoodProductHeader {...recallDetail} />; // 식품
   return;
 };
 
@@ -272,6 +274,58 @@ const ConsumerChemicalProductHeader = ({ productNm, cntntsId, bsnmNm, modlNmInfo
     <div className="p-4 flex flex-col gap-5 bg-white">
       <h2 className="text-18_B text-gray-800">{productNm}</h2>
       <HeaderBaseTable data={tableData} />
+    </div>
+  );
+};
+
+const FoodProductHeader = ({
+  productNm,
+  cntntsId,
+  stdBrcd,
+  makr,
+  recallImgUrls,
+  mnfcturPd,
+  distbTmlmtDe
+}: RecallType) => {
+  const tableData: { title: string; description: string | null }[] = [
+    { title: "카테고리", description: RECALL_CATEGORY_MAP[cntntsId] },
+    { title: "유통표준코드", description: stdBrcd },
+    { title: "제조사", description: makr },
+    { title: "제조연월일", description: mnfcturPd },
+    { title: "유통기한", description: distbTmlmtDe }
+  ];
+
+  return (
+    <div className="p-4 flex flex-col gap-5 bg-white">
+      <Carousel>
+        <CarouselContent>
+          {recallImgUrls && recallImgUrls.length > 0 ? (
+            recallImgUrls.map((item) => (
+              <CarouselItem key={item}>
+                <ImageWithDefault
+                  src={item}
+                  className="rounded-2xl object-cover max-h-85.75 w-85.75"
+                />
+              </CarouselItem>
+            ))
+          ) : (
+            <CarouselItem>
+              <ImageWithDefault className="rounded-2xl object-cover" />
+            </CarouselItem>
+          )}
+        </CarouselContent>
+        {recallImgUrls && recallImgUrls.length > 1 && (
+          <>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </>
+        )}
+      </Carousel>
+
+      <div className="flex flex-col gap-5">
+        <h2 className="text-18_B text-gray-800">{productNm}</h2>
+        <HeaderBaseTable data={tableData} />
+      </div>
     </div>
   );
 };
