@@ -4,7 +4,7 @@ import Header from "@/components/common/Header";
 const ActivityPage = () => {
   return (
     <div>
-      <Header />
+      <Header title="최근 활동" />
 
       <ActivityTabs />
     </div>
