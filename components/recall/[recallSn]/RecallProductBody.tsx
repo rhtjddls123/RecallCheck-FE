@@ -1,6 +1,17 @@
+import { RecallType } from "@/types/recall.type";
 import Link from "next/link";
 
 interface RecallProductBodyProps {
+  recallDetail: RecallType;
+}
+
+const RecallProductBody = ({ recallDetail }: RecallProductBodyProps) => {
+  if (recallDetail.cntntsId === "0101") return <IndustrialProductBody {...recallDetail} />;
+
+  return;
+};
+
+interface IndustrialProductBodyProps {
   recallSe: string | null; // 리콜 구분
   recallPublictBgnde: string | null; // 리콜 공표 시작일
   recallPublictEndde: string | null; // 리콜 공표 만료일
@@ -15,7 +26,7 @@ interface RecallProductBodyProps {
   infoOriginInsttUrl: string | null; // 정보 출처 URL
 }
 
-const RecallProductBody = ({
+const IndustrialProductBody = ({
   recallSe,
   recallPublictBgnde,
   recallPublictEndde,
@@ -25,7 +36,7 @@ const RecallProductBody = ({
   etcInfo,
   infoOriginInstt,
   infoOriginInsttUrl
-}: RecallProductBodyProps) => {
+}: IndustrialProductBodyProps) => {
   const injryArray = injryCauseResult
     ?.split(/(?=ㅇ )/)
     .flatMap((s) => s.split(/(?=- )/))

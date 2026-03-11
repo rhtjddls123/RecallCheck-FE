@@ -1,3 +1,5 @@
+import { RECALL_CATEGORY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
+
 export interface RecentRecallType {
   recallSn: string;
   productNm: string;
@@ -8,7 +10,7 @@ export interface RecentRecallType {
 
 export interface RecallType {
   recallSn: string; // 리콜번호 (PK)
-  cntntsId: string; // 메뉴 ID
+  cntntsId: RECALL_CATEGORY_TYPE; // 메뉴 ID
   productNm: string; // 제품명
 
   makr: string | null; // 제조사

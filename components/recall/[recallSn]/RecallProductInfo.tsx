@@ -20,8 +20,8 @@ const RecallProductInfo = async ({ recallSn }: RecallProductInfoProps) => {
 
   return (
     <div className="flex flex-col gap-3">
-      <RecallProductHeader {...recallDetail} />
-      <RecallProductBody {...recallDetail} />
+      <RecallProductHeader recallDetail={recallDetail} />
+      <RecallProductBody recallDetail={recallDetail} />
     </div>
   );
 };

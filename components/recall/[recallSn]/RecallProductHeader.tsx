@@ -7,8 +7,19 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel";
 import { RECALL_CATEGORY_MAP, RECALL_CATEGORY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
+import { RecallType } from "@/types/recall.type";
 
 interface RecallProductHeaderProps {
+  recallDetail: RecallType;
+}
+
+const RecallProductHeader = ({ recallDetail }: RecallProductHeaderProps) => {
+  if (recallDetail.cntntsId === "0101") return <IndustrialProductHeader {...recallDetail} />;
+
+  return;
+};
+
+interface IndustrialProductHeaderProps {
   productNm: string; // 제품명
   cntntsId: string; // 메뉴 ID
   stdBrcd: string | null; // 표준 바코드(유통표준코드)
@@ -17,14 +28,14 @@ interface RecallProductHeaderProps {
   recallImgUrls: string[] | null;
 }
 
-const RecallProductHeader = ({
+const IndustrialProductHeader = ({
   productNm,
   cntntsId,
   stdBrcd,
   bsnmNm,
   modlNmInfo,
   recallImgUrls
-}: RecallProductHeaderProps) => {
+}: IndustrialProductHeaderProps) => {
   return (
     <div className="p-4 flex flex-col gap-5 bg-white">
       <Carousel>
