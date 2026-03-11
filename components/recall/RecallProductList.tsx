@@ -18,12 +18,15 @@ export const RecallProductListLoadingFallback = () => {
 
 interface RecallProductListProps {
   filters: { [key: string]: string | string[] | undefined };
+  isChatbot?: boolean;
 }
 
-const RecallProductList = async ({ filters }: RecallProductListProps) => {
+const RecallProductList = async ({ filters, isChatbot = false }: RecallProductListProps) => {
   const cookieStore = await cookies();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const res = await fetchWithParams(`${baseUrl}/recall`, filters, {
+  const url = `${baseUrl}/recall${isChatbot ? "/chatbot-search/paginated" : ""}`;
+  console.log(url);
+  const res = await fetchWithParams(`${url}`, filters, {
     cache: "no-store",
     headers: { Cookie: cookieStore.toString() }
   });
