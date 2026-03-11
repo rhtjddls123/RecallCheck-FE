@@ -476,7 +476,7 @@ const BodyBaseTable = ({
             {Array.isArray(v.description) ? (
               <td className="py-2 text-gray-700 text-12_M flex flex-col gap-1">
                 {v.description.length > 0
-                  ? v.description.map((item) => <p key={item}>{item}</p>)
+                  ? v.description.map((item, index) => <p key={`${item}-${index}`}>{item}</p>)
                   : v.description || "-"}
               </td>
             ) : (

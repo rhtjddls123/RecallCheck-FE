@@ -35,7 +35,7 @@ export default function Home() {
           </HomeSectionWrapper>
 
           {/* 안전 정보 영역 */}
-          <HomeSectionWrapper title="안전정보" href="/safetyInfo">
+          <HomeSectionWrapper title="안전정보">
             <SuspenseWithErrorBoundary loadingFallback={<SafetyInfoListLoadingFallback />}>
               <SafetyInfoList />
             </SuspenseWithErrorBoundary>
