@@ -1,9 +1,12 @@
 import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 
 export interface UserType {
-  kakaoId: number;
+  id: number;
+  kakaoId: string;
   nickname: string;
   profileImage: string;
+  role: "USER" | "ADMIN";
+  unreadCount: number;
 }
 
 export interface UserLogType {

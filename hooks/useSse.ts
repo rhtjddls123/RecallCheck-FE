@@ -2,9 +2,12 @@
 
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/authStore";
+import { toast } from "sonner";
+import { useNotificationStore } from "@/store/notificationStore";
 
 export const useSse = () => {
   const { user } = useAuthStore();
+  const { incrementUnread } = useNotificationStore();
 
   useEffect(() => {
     if (!user) return;
@@ -14,8 +17,11 @@ export const useSse = () => {
     });
 
     eventSource.onmessage = (e) => {
-      const notification = JSON.parse(e.data as string);
-      console.log("새 알림:", notification);
+      const { title, body } = JSON.parse(e.data as string) as { title: string; body: string };
+      const count = body.split(",").map((s) => s.trim()).length;
+      toast.message(title);
+
+      incrementUnread(count);
     };
 
     eventSource.onerror = () => {
@@ -25,5 +31,5 @@ export const useSse = () => {
     return () => {
       eventSource.close();
     };
-  }, [user]);
+  }, [user, incrementUnread]);
 };
