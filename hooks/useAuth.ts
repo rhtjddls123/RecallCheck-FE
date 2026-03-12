@@ -1,22 +1,24 @@
-"use client";
-
 import { authApi } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useNotificationStore } from "@/store/notificationStore";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 export const useAuth = () => {
   const { setUser } = useAuthStore();
-  const { incrementUnread } = useNotificationStore();
+  const { settingUnread } = useNotificationStore();
 
-  useQuery({
+  const { data } = useQuery({
     queryKey: ["me"],
-    queryFn: async () => {
-      const user = await authApi.getMe();
-      setUser(user);
-      incrementUnread(user.unreadCount);
-      return user;
-    },
-    retry: false
+    queryFn: () => authApi.getMe(),
+    retry: false,
+    staleTime: 1000 * 60 * 5
   });
+
+  useEffect(() => {
+    if (data) {
+      setUser(data);
+      settingUnread(data.unreadCount);
+    }
+  }, [data, setUser, settingUnread]);
 };
