@@ -31,5 +31,5 @@ export const useSse = () => {
     return () => {
       eventSource.close();
     };
-  }, [user, incrementUnread]);
+  }, [user?.id, incrementUnread]);
 };

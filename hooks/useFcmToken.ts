@@ -48,5 +48,5 @@ export const useFcmToken = () => {
     };
 
     void registerFcm();
-  }, [user]);
+  }, [user?.id]);
 };
