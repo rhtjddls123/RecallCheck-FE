@@ -1,11 +1,15 @@
 import { RECALL_CATEGORY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
 import { notificationApi } from "@/services/notificationService";
+import { useAuthStore } from "@/store/authStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useNotificationCategoryList = () => {
+  const { user } = useAuthStore();
+
   return useQuery({
     queryKey: ["notification", "setting"],
-    queryFn: () => notificationApi.getNotificationSetting()
+    queryFn: () => notificationApi.getNotificationSetting(),
+    enabled: !!user
   });
 };
 

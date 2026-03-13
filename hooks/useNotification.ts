@@ -1,14 +1,18 @@
 import { notificationApi } from "@/services/notificationService";
+import { useAuthStore } from "@/store/authStore";
 import { useNotificationStore } from "@/store/notificationStore";
 import { NotificationType } from "@/types/notification.type";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useInfiniteNotification = () => {
+  const { user } = useAuthStore();
+
   return useInfiniteQuery({
     queryKey: ["notifications"],
     queryFn: ({ pageParam }) => notificationApi.getNotifications({ cursorId: pageParam }),
     initialPageParam: undefined,
-    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.cursorId : undefined)
+    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.cursorId : undefined),
+    enabled: !!user
   });
 };
 

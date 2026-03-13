@@ -1,4 +1,5 @@
 import { RECALL_CATEGORY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
+import { getCurrentFcmToken } from "@/hooks/useFcmToken";
 import { api } from "@/lib/axios";
 import { GetNotificationSetting } from "@/types/response.type";
 
@@ -36,5 +37,17 @@ export const notificationApi = {
   unsubscribeNotification: async (categoryId: RECALL_CATEGORY_TYPE) => {
     const response = await api.delete<{ message: string }>(`/notification/setting/${categoryId}`);
     return response.data;
+  },
+
+  checkPushEnabled: async () => {
+    const token = await getCurrentFcmToken();
+    if (!token) return false;
+
+    const { data } = await api.get<{
+      exists: boolean;
+    }>("/notification/fcm-token/check", {
+      params: { token }
+    });
+    return data.exists;
   }
 };

@@ -6,6 +6,7 @@ import { authApi } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useNotificationStore } from "@/store/notificationStore";
 import { registerFcmToken, unregisterFcmToken } from "@/hooks/useFcmToken";
+import { notificationApi } from "@/services/notificationService";
 
 function KakaoCallbackInner() {
   const router = useRouter();
@@ -26,8 +27,12 @@ function KakaoCallbackInner() {
           settingUnread(user.unreadCount);
 
           if ("serviceWorker" in navigator) {
-            await unregisterFcmToken();
-            await registerFcmToken();
+            const isPushEnabled = await notificationApi.checkPushEnabled();
+
+            if (!isPushEnabled) {
+              await unregisterFcmToken();
+              await registerFcmToken();
+            }
           }
 
           router.replace(redirectUrl);

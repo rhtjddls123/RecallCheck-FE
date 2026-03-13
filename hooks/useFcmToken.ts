@@ -1,8 +1,10 @@
-import { getMessaging, getToken, deleteToken } from "firebase/messaging";
+import { getMessaging, getToken } from "firebase/messaging";
 import { initializeApp, getApps } from "firebase/app";
 import { api } from "@/lib/axios";
 import { useAuthStore } from "@/store/authStore";
 import { useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { notificationApi } from "@/services/notificationService";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -40,6 +42,10 @@ export const registerFcmToken = async () => {
 
 export const unregisterFcmToken = async () => {
   try {
+    const permission = await Notification.requestPermission();
+    console.log(permission);
+    if (permission !== "granted") return;
+
     const { messaging, sw } = await getFirebaseMessaging();
     const token = await getToken(messaging, {
       vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
@@ -48,9 +54,27 @@ export const unregisterFcmToken = async () => {
 
     if (!token) return;
     await api.delete("/notification/fcm-token", { data: { token } });
-    await deleteToken(messaging); // Firebase에서도 삭제
   } catch (error) {
     console.error("FCM 토큰 삭제 실패:", error);
+  }
+};
+
+export const getCurrentFcmToken = async () => {
+  try {
+    if (!("serviceWorker" in navigator)) return null;
+
+    const permission = Notification.permission;
+    if (permission !== "granted") return null;
+
+    const { messaging, sw } = await getFirebaseMessaging();
+    const token = await getToken(messaging, {
+      vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+      serviceWorkerRegistration: sw
+    });
+
+    return token || null;
+  } catch {
+    return null;
   }
 };
 
@@ -65,4 +89,37 @@ export const useFcmToken = () => {
 
     void registerFcmToken();
   }, [user?.id]);
+};
+
+export const useGetFcmState = () => {
+  const { user } = useAuthStore();
+
+  return useQuery({
+    queryKey: ["fcmState", user?.id],
+    queryFn: async () => notificationApi.checkPushEnabled(),
+    enabled: !!user
+  });
+};
+
+export const useSubscribeFcm = () => {
+  const queryClient = useQueryClient();
+  const { user } = useAuthStore();
+
+  return useMutation({
+    mutationFn: () => registerFcmToken(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fcmState", user?.id] });
+    }
+  });
+};
+export const useUnsubscribeFcm = () => {
+  const queryClient = useQueryClient();
+  const { user } = useAuthStore();
+
+  return useMutation({
+    mutationFn: () => unregisterFcmToken(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fcmState", user?.id] });
+    }
+  });
 };
