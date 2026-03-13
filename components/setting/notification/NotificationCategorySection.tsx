@@ -2,7 +2,6 @@
 
 import SectionDivider from "./SectionDivider";
 import NotificationCategory from "./NotificationCategory";
-import { useState } from "react";
 import {
   RECALL_CATEGORY_KEY_TYPE,
   RECALL_CATEGORY_TYPE
@@ -22,6 +21,12 @@ import {
   Wrench,
   LucideIcon
 } from "lucide-react";
+import {
+  useNotificationCategoryList,
+  useSubscribeNotification,
+  useUnsubscribeNotification
+} from "@/hooks/useNotificationCategory";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface Category {
   id: RECALL_CATEGORY_TYPE;
@@ -45,24 +50,20 @@ const ALL_CATEGORIES: Category[] = [
 ];
 
 const NotificationCategorySection = () => {
-  const [subscriptions, setSubscriptions] = useState<Partial<Record<RECALL_CATEGORY_TYPE, string>>>(
-    {}
+  const { data, isPending, isError } = useNotificationCategoryList();
+  const { mutate: subscribe } = useSubscribeNotification();
+  const { mutate: unsubscribe } = useUnsubscribeNotification();
+
+  if (isPending) return <SkeletonUI />;
+  if (isError) return <p className="text-16_B text-red-500 mb-10">에러가 발생하였습니다.</p>;
+
+  const subscribed = ALL_CATEGORIES.filter((c) =>
+    data?.find((s) => s.menu.id === c.id && s.isActive)
+  );
+  const unsubscribed = ALL_CATEGORIES.filter(
+    (c) => !data?.find((s) => s.menu.id === c.id && s.isActive)
   );
 
-  const toggleSubscription = (id: RECALL_CATEGORY_TYPE) => {
-    setSubscriptions((prev) => {
-      const next = { ...prev };
-      if (next[id]) {
-        delete next[id];
-      } else {
-        next[id] = new Date().toISOString().split("T")[0];
-      }
-      return next;
-    });
-  };
-
-  const subscribed = ALL_CATEGORIES.filter((c) => subscriptions[c.id]);
-  const unsubscribed = ALL_CATEGORIES.filter((c) => !subscriptions[c.id]);
   return (
     <section className="mb-8">
       <p className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -77,8 +78,8 @@ const NotificationCategorySection = () => {
               <div key={cat.id}>
                 <NotificationCategory
                   category={cat}
-                  subscribedAt={subscriptions[cat.id] || null}
-                  onToggle={() => toggleSubscription(cat.id)}
+                  subscribedAt={data?.find((s) => s.menu.id === cat.id)?.updatedAt ?? null}
+                  onToggle={() => unsubscribe(cat.id)}
                 />
               </div>
             ))}
@@ -93,12 +94,52 @@ const NotificationCategorySection = () => {
                 <NotificationCategory
                   category={cat}
                   subscribedAt={null}
-                  onToggle={() => toggleSubscription(cat.id)}
+                  onToggle={() => subscribe(cat.id)}
                 />
               </div>
             ))}
           </>
         )}
+      </div>
+    </section>
+  );
+};
+
+const SkeletonUI = () => {
+  return (
+    <section className="mb-8">
+      <Skeleton className="mb-3 h-3 w-16" />
+
+      <div className="rounded-xl border divide-y overflow-hidden">
+        <div className="bg-muted/50 px-4 py-2">
+          <Skeleton className="h-2.5 w-20" />
+        </div>
+
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-3 px-4 py-3.5">
+            <Skeleton className="h-9 w-9 shrink-0 rounded-lg" />
+            <div className="flex-1 space-y-1.5">
+              <Skeleton className="h-3.5 w-24" />
+              <Skeleton className="h-2.5 w-36" />
+            </div>
+            <Skeleton className="h-8 w-16 rounded-md" />
+          </div>
+        ))}
+
+        <div className="bg-muted/50 px-4 py-2">
+          <Skeleton className="h-2.5 w-24" />
+        </div>
+
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-3 px-4 py-3.5 opacity-50">
+            <Skeleton className="h-9 w-9 shrink-0 rounded-lg" />
+            <div className="flex-1 space-y-1.5">
+              <Skeleton className="h-3.5 w-20" />
+              <Skeleton className="h-2.5 w-32" />
+            </div>
+            <Skeleton className="h-8 w-16 rounded-md" />
+          </div>
+        ))}
       </div>
     </section>
   );

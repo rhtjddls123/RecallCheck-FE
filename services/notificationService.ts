@@ -1,4 +1,6 @@
+import { RECALL_CATEGORY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
 import { api } from "@/lib/axios";
+import { GetNotificationSetting } from "@/types/response.type";
 
 export const notificationApi = {
   getNotifications: async (params?: { cursorId?: number; take?: number }) => {
@@ -18,6 +20,21 @@ export const notificationApi = {
 
   deleteNotification: async (id: number) => {
     const response = await api.delete(`/notification/${id}`);
+    return response.data;
+  },
+
+  getNotificationSetting: async () => {
+    const response = await api.get<GetNotificationSetting>("/notification/setting");
+    return response.data;
+  },
+
+  subscribeNotification: async (categoryId: RECALL_CATEGORY_TYPE) => {
+    const response = await api.post<{ message: string }>(`/notification/setting/${categoryId}`);
+    return response.data;
+  },
+
+  unsubscribeNotification: async (categoryId: RECALL_CATEGORY_TYPE) => {
+    const response = await api.delete<{ message: string }>(`/notification/setting/${categoryId}`);
     return response.data;
   }
 };

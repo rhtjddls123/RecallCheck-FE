@@ -1,3 +1,4 @@
+import { NotificationSettingType } from "./notification.type";
 import { RecallType } from "./recall.type";
 import { UserLogType } from "./user.type";
 
@@ -45,3 +46,5 @@ export interface GetActivityResponse {
   hasNextPage: boolean;
   next: string | null;
 }
+
+export type GetNotificationSetting = NotificationSettingType[];
