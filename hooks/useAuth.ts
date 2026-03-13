@@ -12,7 +12,13 @@ export const useAuth = () => {
 
   const { data } = useQuery({
     queryKey: ["me"],
-    queryFn: () => authApi.getMe(),
+    queryFn: async () => {
+      try {
+        return await authApi.getMe();
+      } catch {
+        return null;
+      }
+    },
     retry: false,
     staleTime: Infinity
   });
