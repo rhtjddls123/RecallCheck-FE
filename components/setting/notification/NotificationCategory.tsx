@@ -21,7 +21,7 @@ const NotificationCategory = ({ category, subscribedAt, onToggle }: Notification
       )}
     >
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-base">
-        {category.icon}
+        <category.icon size={16} className="text-muted-foreground" />
       </div>
 
       <div className="min-w-0 flex-1">
