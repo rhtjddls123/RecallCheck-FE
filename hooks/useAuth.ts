@@ -13,7 +13,8 @@ export const useAuth = () => {
   const { data } = useQuery({
     queryKey: ["me"],
     queryFn: () => authApi.getMe(),
-    retry: false
+    retry: false,
+    staleTime: Infinity
   });
 
   useEffect(() => {
