@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { authApi } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useNotificationStore } from "@/store/notificationStore";
+import { registerFcmToken, unregisterFcmToken } from "@/hooks/useFcmToken";
 
 function KakaoCallbackInner() {
   const router = useRouter();
@@ -20,9 +21,15 @@ function KakaoCallbackInner() {
       authApi
         .kakaoLogin(code)
         .then(() => authApi.getMe())
-        .then((user) => {
+        .then(async (user) => {
           setUser(user);
           settingUnread(user.unreadCount);
+
+          if ("serviceWorker" in navigator) {
+            await unregisterFcmToken();
+            await registerFcmToken();
+          }
+
           router.replace(redirectUrl);
         });
     }

@@ -1,6 +1,5 @@
 "use client";
 
-import { useFcmToken } from "@/hooks/useFcmToken";
 import { useSse } from "@/hooks/useSse";
 import { getApps, initializeApp } from "firebase/app";
 import { getMessaging, onMessage } from "firebase/messaging";
@@ -16,7 +15,6 @@ const firebaseConfig = {
 };
 
 const FcmProvider = () => {
-  useFcmToken();
   useSse();
 
   useEffect(() => {
