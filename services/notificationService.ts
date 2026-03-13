@@ -1,7 +1,7 @@
 import { RECALL_CATEGORY_TYPE } from "@/const/RECALL_CATEGORY_KEY_MAP.const";
 import { getCurrentFcmToken } from "@/hooks/useFcmToken";
 import { api } from "@/lib/axios";
-import { GetNotificationSetting } from "@/types/response.type";
+import { GetNotificationSetting, GetQuietTimeResponse } from "@/types/response.type";
 
 export const notificationApi = {
   getNotifications: async (params?: { cursorId?: number; take?: number }) => {
@@ -49,5 +49,10 @@ export const notificationApi = {
       params: { token }
     });
     return data.exists;
+  },
+
+  getQuietTime: async () => {
+    const response = await api.get<GetQuietTimeResponse>("/notification/quiet-time");
+    return response.data;
   }
 };

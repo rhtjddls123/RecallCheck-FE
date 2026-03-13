@@ -48,3 +48,8 @@ export interface GetActivityResponse {
 }
 
 export type GetNotificationSetting = NotificationSettingType[];
+
+export interface GetQuietTimeResponse {
+  quietStart: string | null;
+  quietEnd: string | null;
+}

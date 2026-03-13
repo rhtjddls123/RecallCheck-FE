@@ -36,3 +36,13 @@ export const useUnsubscribeNotification = () => {
     }
   });
 };
+
+export const useGetQuietTime = () => {
+  const { user } = useAuthStore();
+
+  return useQuery({
+    queryKey: ["notification", "quietTime"],
+    queryFn: () => notificationApi.getQuietTime(),
+    enabled: !!user
+  });
+};

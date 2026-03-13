@@ -3,25 +3,21 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
+import { useGetQuietTime } from "@/hooks/useNotificationCategory";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { useState } from "react";
-
-interface DndSettings {
-  enabled: boolean;
-  startTime: string;
-  endTime: string;
-}
 
 const NotificationDndSection = () => {
-  const [dnd, setDnd] = useState<DndSettings>({
-    enabled: false,
-    startTime: "22:00",
-    endTime: "07:00"
-  });
+  const { data, isPending, isError } = useGetQuietTime();
 
-  const dndDescription = dnd.enabled
-    ? `${dnd.startTime} ~ ${dnd.endTime} 동안 알림을 받지 않아요`
+  if (isPending) return <SkeletonUI />;
+  if (isError) return <p className="text-16_B text-red-500 mb-10">에러가 발생하였습니다.</p>;
+
+  const dndEnabled = !!data.quietStart && !!data.quietEnd;
+
+  const dndDescription = dndEnabled
+    ? `${data.quietStart} ~ ${data.quietEnd} 동안 알림을 받지 않아요`
     : "설정된 시간에 알림을 받지 않아요";
 
   return (
@@ -37,12 +33,12 @@ const NotificationDndSection = () => {
             <p className="mt-0.5 text-xs text-muted-foreground">{dndDescription}</p>
           </div>
           <Switch
-            checked={dnd.enabled}
-            onCheckedChange={(v) => setDnd((prev) => ({ ...prev, enabled: v }))}
+            checked={dndEnabled}
+            // onCheckedChange={(v) => setDnd((prev) => ({ ...prev, enabled: v }))}
           />
         </div>
 
-        {dnd.enabled && (
+        {dndEnabled && (
           <>
             <Separator />
             <div className="flex items-center gap-3 px-4 py-3.5">
@@ -52,9 +48,9 @@ const NotificationDndSection = () => {
               <Label className="flex-1 text-sm font-normal">시작 시간</Label>
               <Input
                 type="time"
-                value={dnd.startTime}
-                onChange={(e) => setDnd((prev) => ({ ...prev, startTime: e.target.value }))}
-                className="w-28 text-center text-sm"
+                defaultValue={data.quietStart!}
+                // onChange={(e) => setDnd((prev) => ({ ...prev, startTime: e.target.value }))}
+                className="w-31 text-center text-sm"
               />
             </div>
 
@@ -66,13 +62,31 @@ const NotificationDndSection = () => {
               <Label className="flex-1 text-sm font-normal">종료 시간</Label>
               <Input
                 type="time"
-                value={dnd.endTime}
-                onChange={(e) => setDnd((prev) => ({ ...prev, endTime: e.target.value }))}
-                className="w-28 text-center text-sm"
+                defaultValue={data.quietEnd!}
+                // onChange={(e) => setDnd((prev) => ({ ...prev, endTime: e.target.value }))}
+                className="w-31 text-center text-sm"
               />
             </div>
           </>
         )}
+      </div>
+    </section>
+  );
+};
+
+const SkeletonUI = () => {
+  return (
+    <section className="mb-8">
+      <Skeleton className="mb-3 h-3 w-16" />
+
+      <div className="rounded-xl border overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-3.5">
+          <div className="space-y-1.5">
+            <Skeleton className="h-3.5 w-24" />
+            <Skeleton className="h-2.5 w-40" />
+          </div>
+          <Skeleton className="h-5 w-9 rounded-full" />
+        </div>
       </div>
     </section>
   );
