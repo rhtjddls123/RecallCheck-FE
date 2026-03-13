@@ -1,3 +1,5 @@
+"use client";
+
 import { authApi } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useNotificationStore } from "@/store/notificationStore";
@@ -20,4 +22,11 @@ export const useAuth = () => {
       settingUnread(data.unreadCount);
     }
   }, [data, setUser, settingUnread]);
+};
+
+export const useAuthGuard = () => {
+  const { user } = useAuthStore();
+
+  if (user) return "authorized" as const;
+  return "unauthorized" as const;
 };

@@ -3,8 +3,14 @@
 import NotificationChannelSection from "./NotificationChannelSection";
 import NotificationDndSection from "./NotificationDndSection";
 import NotificationCategorySection from "./NotificationCategorySection";
+import { useAuthGuard } from "@/hooks/useAuth";
+import LoginFallback from "@/components/common/LoginFallback";
 
 export default function NotificationSettings() {
+  const status = useAuthGuard();
+
+  if (status === "unauthorized") return <LoginFallback />;
+
   return (
     <div className="mx-auto max-w-xl px-4 py-8">
       <div className="mb-7">

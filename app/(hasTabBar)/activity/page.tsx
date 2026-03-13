@@ -6,7 +6,9 @@ const ActivityPage = () => {
     <div>
       <Header title="최근 활동" />
 
-      <ActivityTabs />
+      <div className="h-[calc(100dvh-120px)]">
+        <ActivityTabs />
+      </div>
     </div>
   );
 };

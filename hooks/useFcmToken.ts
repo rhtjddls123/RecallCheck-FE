@@ -43,7 +43,6 @@ export const registerFcmToken = async () => {
 export const unregisterFcmToken = async () => {
   try {
     const permission = await Notification.requestPermission();
-    console.log(permission);
     if (permission !== "granted") return;
 
     const { messaging, sw } = await getFirebaseMessaging();
