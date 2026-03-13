@@ -1,3 +1,4 @@
+import { NotificationSettingType } from "./notification.type";
 import { RecallType } from "./recall.type";
 import { UserLogType } from "./user.type";
 
@@ -44,4 +45,11 @@ export interface GetActivityResponse {
   cursorId: number | null;
   hasNextPage: boolean;
   next: string | null;
+}
+
+export type GetNotificationSetting = NotificationSettingType[];
+
+export interface GetQuietTimeResponse {
+  quietStart: string | null;
+  quietEnd: string | null;
 }

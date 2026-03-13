@@ -1,9 +1,13 @@
+"use client";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClockIcon, ImageIcon, SearchIcon } from "lucide-react";
 import SearchList from "./SearchList";
 import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 import ViewList from "./ViewList";
 import ImageList from "./ImageList";
+import { useAuthGuard } from "@/hooks/useAuth";
+import LoginFallback from "../common/LoginFallback";
 
 const TABS = [
   { name: "SEARCH", Icon: SearchIcon },
@@ -12,6 +16,10 @@ const TABS = [
 ];
 
 const ActivityTabs = () => {
+  const status = useAuthGuard();
+
+  if (status === "unauthorized") return <LoginFallback />;
+
   return (
     <Tabs defaultValue={TABS[0].name} className="px-3">
       <TabsList variant="line">

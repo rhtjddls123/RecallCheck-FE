@@ -1,6 +1,7 @@
 import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 import { api } from "@/lib/axios";
 import { GetActivityResponse } from "@/types/response.type";
+import { UserType } from "@/types/user.type";
 
 export const authApi = {
   kakaoLogin: async (code: string) => {
@@ -14,7 +15,7 @@ export const authApi = {
   },
 
   getMe: async () => {
-    const response = await api.get("/auth/me");
+    const response = await api.get<UserType>("/auth/me");
     return response.data;
   },
 

@@ -1,5 +1,5 @@
-import { BellIcon } from "lucide-react";
 import Link from "next/link";
+import NotificationBell from "./NotificationBell";
 
 interface HeaderProps {
   title?: string;
@@ -17,7 +17,7 @@ const Header = ({ title, href }: HeaderProps) => {
       <h1 className="text-16_B h-fit">{title}</h1>
 
       {/* 나중에 알림 아이콘을 컴포넌트로 따로 빼야 함 */}
-      <BellIcon className="w-6 h-6 bg-blue-400" />
+      <NotificationBell />
     </header>
   );
 };

@@ -4,7 +4,7 @@ import { useAuthStore } from "@/store/authStore";
 export const useDeleteAccount = () => {
   const { clearUser } = useAuthStore();
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     authApi.deleteAccount();
     clearUser();
   };

@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
 import AuthProvider from "@/components/common/AuthProvider";
 import QueryProvider from "@/providers/QueryProvider";
+import FcmProvider from "@/components/common/FcmProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={`flex justify-center`}>
         <QueryProvider>
           <AuthProvider>
+            <FcmProvider />
             <main className=" relative h-dvh w-93.75">{children}</main>
           </AuthProvider>
           <Toaster />
