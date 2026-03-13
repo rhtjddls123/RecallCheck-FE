@@ -4,7 +4,7 @@ import { api } from "@/lib/axios";
 import { useAuthStore } from "@/store/authStore";
 import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { notificationApi } from "@/services/notificationService";
+import { notificationApi, PatchQuiteTimeRequest } from "@/services/notificationService";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -112,6 +112,7 @@ export const useSubscribeFcm = () => {
     }
   });
 };
+
 export const useUnsubscribeFcm = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
@@ -120,6 +121,27 @@ export const useUnsubscribeFcm = () => {
     mutationFn: () => unregisterFcmToken(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fcmState", user?.id] });
+    }
+  });
+};
+
+export const useGetQuietTime = () => {
+  const { user } = useAuthStore();
+
+  return useQuery({
+    queryKey: ["fcmState", "quietTime"],
+    queryFn: () => notificationApi.getQuietTime(),
+    enabled: !!user
+  });
+};
+
+export const useSetQuietTime = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: PatchQuiteTimeRequest) => notificationApi.patchQuietTime(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fcmState", "quietTime"] });
     }
   });
 };

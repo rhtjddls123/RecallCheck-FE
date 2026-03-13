@@ -5,16 +5,33 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
-import { useGetQuietTime } from "@/hooks/useNotificationCategory";
+import { useGetQuietTime, useSetQuietTime } from "@/hooks/useFcmToken";
+import { GetQuietTimeResponse } from "@/types/response.type";
 import { MoonIcon, SunIcon } from "lucide-react";
+import { useRef } from "react";
 
 const NotificationDndSection = () => {
   const { data, isPending, isError } = useGetQuietTime();
 
   if (isPending) return <SkeletonUI />;
-  if (isError) return <p className="text-16_B text-red-500 mb-10">에러가 발생하였습니다.</p>;
+  if (isError) return <p>에러가 발생하였습니다.</p>;
+
+  return <NotificationDndForm data={data} />;
+};
+
+const NotificationDndForm = ({ data }: { data: GetQuietTimeResponse }) => {
+  const { mutateAsync: setQuiteTimeMutate, isPending: isSetQuiteTimePending } = useSetQuietTime();
+  const startRef = useRef(data.quietStart);
+  const endRef = useRef(data.quietEnd);
 
   const dndEnabled = !!data.quietStart && !!data.quietEnd;
+
+  const handleToggle = async () => {
+    if (isSetQuiteTimePending) return;
+
+    if (dndEnabled) setQuiteTimeMutate({ quietStart: null, quietEnd: null });
+    else setQuiteTimeMutate({ quietStart: "22:00", quietEnd: "07:00" });
+  };
 
   const dndDescription = dndEnabled
     ? `${data.quietStart} ~ ${data.quietEnd} 동안 알림을 받지 않아요`
@@ -32,10 +49,7 @@ const NotificationDndSection = () => {
             <p className="text-sm font-medium">방해금지 모드</p>
             <p className="mt-0.5 text-xs text-muted-foreground">{dndDescription}</p>
           </div>
-          <Switch
-            checked={dndEnabled}
-            // onCheckedChange={(v) => setDnd((prev) => ({ ...prev, enabled: v }))}
-          />
+          <Switch checked={dndEnabled} onCheckedChange={handleToggle} />
         </div>
 
         {dndEnabled && (
@@ -49,7 +63,12 @@ const NotificationDndSection = () => {
               <Input
                 type="time"
                 defaultValue={data.quietStart!}
-                // onChange={(e) => setDnd((prev) => ({ ...prev, startTime: e.target.value }))}
+                onChange={(e) => {
+                  startRef.current = e.target.value;
+                }}
+                onBlur={() =>
+                  setQuiteTimeMutate({ quietStart: startRef.current, quietEnd: endRef.current })
+                }
                 className="w-31 text-center text-sm"
               />
             </div>
@@ -63,7 +82,12 @@ const NotificationDndSection = () => {
               <Input
                 type="time"
                 defaultValue={data.quietEnd!}
-                // onChange={(e) => setDnd((prev) => ({ ...prev, endTime: e.target.value }))}
+                onChange={(e) => {
+                  endRef.current = e.target.value;
+                }}
+                onBlur={() =>
+                  setQuiteTimeMutate({ quietStart: startRef.current, quietEnd: endRef.current })
+                }
                 className="w-31 text-center text-sm"
               />
             </div>

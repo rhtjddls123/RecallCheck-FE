@@ -54,5 +54,18 @@ export const notificationApi = {
   getQuietTime: async () => {
     const response = await api.get<GetQuietTimeResponse>("/notification/quiet-time");
     return response.data;
+  },
+
+  patchQuietTime: async ({ quietStart, quietEnd }: PatchQuiteTimeRequest) => {
+    const response = await api.patch<{ message: string }>("/notification/quiet-time", {
+      quietStart,
+      quietEnd
+    });
+    return response.data;
   }
 };
+
+export interface PatchQuiteTimeRequest {
+  quietStart: string | null;
+  quietEnd: string | null;
+}
