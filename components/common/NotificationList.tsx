@@ -62,8 +62,8 @@ const NotificationList = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between p-4 border-b">
-        <span className="font-semibold">알림</span>
+      <div className="flex items-center justify-between p-4 border-b dark:border-zinc-700">
+        <span className="font-semibold dark:text-gray-100">알림</span>
         <Button variant="ghost" size="sm" onClick={() => markAllAsRead()}>
           전체 읽음
         </Button>
@@ -82,8 +82,8 @@ const NotificationList = () => {
             key={notification.id}
             onClick={() => handleClick(notification)}
             className={cn(
-              "relative p-4 border-b cursor-pointer hover:bg-muted transition-colors",
-              !notification.isRead && "bg-blue-50"
+              "relative p-4 border-b dark:border-zinc-700 cursor-pointer hover:bg-muted transition-colors",
+              !notification.isRead && "bg-blue-50 dark:bg-blue-950"
             )}
           >
             <div className="relative flex items-start gap-2">
@@ -99,10 +99,10 @@ const NotificationList = () => {
               </div>
             </div>
             <button
-              className="p-2 cursor-pointer hover:text-black/60 absolute top-0 right-0"
+              className="p-2 cursor-pointer hover:text-black/60 dark:hover:text-white/60 absolute top-0 right-0 dark:text-gray-400"
               onClick={(e) => handleDelete(e, notification)}
             >
-              <XIcon className="size-4 " />
+              <XIcon className="size-4" />
             </button>
           </div>
         ))}

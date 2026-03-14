@@ -28,13 +28,13 @@ const ConfirmModal = ({ title, description, children, onConfirm }: ConfirmModalP
 
         <div data-slot="dialog-footer" className="flex justify-center gap-2">
           <button
-            className="px-4 py-2 bg-black text-white rounded-xl hover:bg-black/70 w-full cursor-pointer"
+            className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:bg-black/70 dark:hover:bg-white/70 w-full cursor-pointer"
             onClick={onConfirm}
           >
             확인
           </button>
           <DialogClose asChild>
-            <button className="px-4 py-2 rounded-xl border-2 hover:bg-gray-50 w-full cursor-pointer">
+            <button className="px-4 py-2 rounded-xl border-2 dark:border-zinc-600 hover:bg-gray-50 dark:hover:bg-zinc-800 w-full cursor-pointer dark:text-gray-300">
               취소
             </button>
           </DialogClose>

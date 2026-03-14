@@ -36,18 +36,18 @@ const RecallProductInfo = async ({ recallSn }: RecallProductInfoProps) => {
 export const RecallProductInfoLoadingFallback = () => {
   return (
     <div className="flex flex-col gap-3 h-[calc(100dvh-120px)]">
-      <div className="flex flex-col gap-5 bg-white p-4">
-        <Skeleton className="w-full h-10" />
+      <div className="flex flex-col gap-5 bg-white dark:bg-zinc-800 p-4">
+        <Skeleton className="w-full h-10 dark:bg-zinc-700" />
 
         <div className="w-full flex flex-col gap-1">
           {[1, 2, 3].map((v) => (
-            <Skeleton key={v} className="w-full h-7.5" />
+            <Skeleton key={v} className="w-full h-7.5 dark:bg-zinc-700" />
           ))}
         </div>
 
         <div className="w-full flex flex-col gap-1">
           {[1, 2, 3].map((v) => (
-            <Skeleton key={v} className="w-full h-7.5" />
+            <Skeleton key={v} className="w-full h-7.5 dark:bg-zinc-700" />
           ))}
         </div>
       </div>

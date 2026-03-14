@@ -53,8 +53,8 @@ const DateFilter = ({ title }: DateFilterProps) => {
         <button
           className={cn(
             "text-[14px] leading-[100%] font-medium tracking-[-2.5%]",
-            "select-none flex items-center justify-center gap-1 rounded-[100px] outline outline-gray-100 bg-white h-10.25 px-4 cursor-pointer",
-            open && "bg-gray-950 text-white "
+            "select-none flex items-center justify-center gap-1 rounded-[100px] outline outline-gray-100 dark:outline-zinc-700 bg-white dark:bg-zinc-800 dark:text-gray-100 h-10.25 px-4 cursor-pointer",
+            open && "bg-gray-950 dark:bg-gray-100 text-white dark:text-gray-950"
           )}
         >
           {date?.from ? (
@@ -71,7 +71,7 @@ const DateFilter = ({ title }: DateFilterProps) => {
           {open ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 flex flex-col items-end">
+      <PopoverContent className="w-auto p-0 flex flex-col items-end dark:bg-zinc-800 dark:border-zinc-700">
         <Calendar
           mode="range"
           defaultMonth={date?.from}
@@ -80,7 +80,10 @@ const DateFilter = ({ title }: DateFilterProps) => {
           numberOfMonths={1}
           locale={ko}
         />
-        <button onClick={handleReset} className="w-fit mr-2 mb-2 text-12_B cursor-pointer">
+        <button
+          onClick={handleReset}
+          className="w-fit mr-2 mb-2 text-12_B cursor-pointer dark:text-gray-400"
+        >
           초기화
         </button>
       </PopoverContent>

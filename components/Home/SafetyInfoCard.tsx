@@ -15,9 +15,11 @@ const SafetyInfoCard = ({ title, description, img, href }: SafetyInfoCardProps) 
       <ImageWithDefault className="size-19.25 rounded-2xl object-cover" src={img} alt={title} />
 
       <div className="flex flex-col gap-1.5 justify-center items-center">
-        <h3 className="w-63.5 text-18_B text-gray-950 truncate">{title}</h3>
+        <h3 className="w-63.5 text-18_B text-gray-950 dark:text-gray-100 truncate">{title}</h3>
         {description && (
-          <span className="w-63.5 text-12_M text-gray-600 truncate">{description}</span>
+          <span className="w-63.5 text-12_M text-gray-600 dark:text-gray-400 truncate">
+            {description}
+          </span>
         )}
       </div>
     </Link>
