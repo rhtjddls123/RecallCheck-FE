@@ -14,8 +14,8 @@ const MenuList = () => {
   const { onDeleteAccount } = useDeleteAccount();
   return (
     <div className="flex flex-col gap-4">
-      <div className="bg-white select-none flex flex-col justify-center gap-2 text-16_M rounded-xl">
-        <Link href={"/setting/notification"} className="p-4 cursor-pointer">
+      <div className="bg-white dark:bg-zinc-800 select-none flex flex-col justify-center gap-2 text-16_M rounded-xl">
+        <Link href={"/setting/notification"} className="p-4 cursor-pointer dark:text-gray-100">
           알림 관리
         </Link>
         <TermsPolicyModal />

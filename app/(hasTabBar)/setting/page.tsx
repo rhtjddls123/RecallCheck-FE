@@ -8,7 +8,7 @@ const SettingPage = () => {
     <div>
       <Header title="설정" />
 
-      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-50 p-4">
+      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-50 dark:bg-zinc-900 p-4">
         <div className="flex flex-col gap-4">
           <Profile />
           <MenuList />
