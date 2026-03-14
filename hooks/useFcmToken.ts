@@ -1,4 +1,4 @@
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, isSupported } from "firebase/messaging";
 import { initializeApp, getApps } from "firebase/app";
 import { api } from "@/lib/axios";
 import { useAuthStore } from "@/store/authStore";
@@ -16,6 +16,9 @@ const firebaseConfig = {
 };
 
 const getFirebaseMessaging = async () => {
+  const supported = await isSupported();
+  if (!supported) throw new Error("FCM 미지원 브라우저");
+
   const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
   const messaging = getMessaging(app);
   const sw = await navigator.serviceWorker.register("/firebase-messaging-sw.js");

@@ -14,12 +14,32 @@ const NotificationChannelSection = () => {
   if (isPending) return <SkeletonUI />;
   if (isError) return <p className="text-16_B text-red-500 mb-10">에러가 발생하였습니다.</p>;
 
-  const permission = Notification.permission;
+  const permission = typeof Notification !== "undefined" ? Notification.permission : "denied";
+  const isSupported = typeof Notification !== "undefined" && "serviceWorker" in navigator;
 
   const handleSebscribe = () => {
+    if (!isSupported) {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      toast.error("지원하지 않는 브라우저입니다", {
+        description: (
+          <p className="text-red-500">
+            {isMobile
+              ? "모바일 환경에서는 푸시 알림을 지원하지 않아요"
+              : "Chrome 또는 Edge 브라우저를 이용해주세요"}
+          </p>
+        ),
+        duration: 5000
+      });
+      return;
+    }
+
     if (permission === "denied") {
       toast.error("알림이 차단되어 있습니다", {
-        description: "브라우저 주소창 자물쇠 아이콘 → 알림 → 허용으로 변경해주세요",
+        description: (
+          <p className="text-red-500">
+            브라우저 주소창 자물쇠 아이콘 → 알림 → 허용으로 변경해주세요
+          </p>
+        ),
         duration: 5000
       });
       return;
