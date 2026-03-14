@@ -22,9 +22,9 @@ const SubCategoryButtons = ({
           key={sub}
           onClick={() => onSelect(sub)}
           disabled={disabled}
-          className="px-3 py-1.5 text-xs font-medium rounded-full border border-emerald-300
-                       text-emerald-600 bg-white hover:bg-emerald-50 active:scale-95
-                       disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+          className="px-3 py-1.5 text-xs font-medium rounded-full border border-emerald-300 dark:border-emerald-700
+             text-emerald-600 dark:text-emerald-400 bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-zinc-700 active:scale-95
+             disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
         >
           {sub}
         </button>

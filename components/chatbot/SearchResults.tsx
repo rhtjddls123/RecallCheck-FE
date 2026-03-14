@@ -18,9 +18,9 @@ const SearchResults = ({ products, count, targetUrl }: SearchResultsProps) => {
       className="w-full mt-2"
     >
       {count && targetUrl && (
-        <div className="pl-2 flex gap-1 text-12_M">
+        <div className="pl-2 flex gap-1 text-12_M dark:text-gray-300">
           <p>총 {count}개의 결과가 존재합니다.</p>
-          <Link href={targetUrl} className="underline">
+          <Link href={targetUrl} className="underline dark:text-gray-400">
             전체보기
           </Link>
         </div>

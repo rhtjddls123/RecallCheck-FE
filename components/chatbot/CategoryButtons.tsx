@@ -14,9 +14,9 @@ const CategoryButtons = ({ disabled, onSelect, onUnknown }: CategoryButtonsProps
           key={cat}
           onClick={() => onSelect(cat)}
           disabled={disabled}
-          className="px-3 py-1.5 text-xs font-medium rounded-full border border-indigo-300
-                       text-indigo-600 bg-white hover:bg-indigo-50 active:scale-95
-                       disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+          className="px-3 py-1.5 text-xs font-medium rounded-full border border-indigo-300 dark:border-indigo-700
+                 text-indigo-600 dark:text-indigo-400 bg-white dark:bg-zinc-800 hover:bg-indigo-50 dark:hover:bg-zinc-700 active:scale-95
+                 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
         >
           {cat}
         </button>
@@ -24,9 +24,9 @@ const CategoryButtons = ({ disabled, onSelect, onUnknown }: CategoryButtonsProps
       <button
         onClick={onUnknown}
         disabled={disabled}
-        className="px-3 py-1.5 text-xs font-medium rounded-full border border-emerald-300
-                       text-emerald-600 bg-white hover:bg-emerald-50 active:scale-95
-                       disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+        className="px-3 py-1.5 text-xs font-medium rounded-full border border-emerald-300 dark:border-emerald-700
+               text-emerald-600 dark:text-emerald-400 bg-white dark:bg-zinc-800 hover:bg-emerald-50 dark:hover:bg-zinc-700 active:scale-95
+               disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
       >
         모르겠어요
       </button>
