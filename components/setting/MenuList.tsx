@@ -1,12 +1,12 @@
 "use client";
 
 import { useLogout } from "@/hooks/useLogout";
-import { Switch } from "../ui/switch";
 import { useAuthStore } from "@/store/authStore";
 import { useDeleteAccount } from "@/hooks/useDeleteAccount";
 import TermsPolicyModal from "./TermsPolicyModal";
 import ConfirmModal from "../common/ConfirmModal";
 import Link from "next/link";
+import DarkModeToggle from "./ThemeToggle";
 
 const MenuList = () => {
   const { user } = useAuthStore();
@@ -19,12 +19,7 @@ const MenuList = () => {
           알림 관리
         </Link>
         <TermsPolicyModal />
-        <div className="p-4 flex items-center justify-between">
-          <label htmlFor="dark-mode" className="cursor-pointer">
-            다크 모드로 전환
-          </label>
-          <Switch id="dark-mode" className="cursor-pointer" />
-        </div>
+        <DarkModeToggle />
       </div>
 
       {user && (
