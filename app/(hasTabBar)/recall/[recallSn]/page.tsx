@@ -39,7 +39,7 @@ const RecallDetailPage = async ({ params }: RecallDetailPageProps) => {
 
   return (
     <div>
-      <Header />
+      <Header type="back" />
       <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-100 dark:bg-zinc-900">
         <SuspenseWithErrorBoundary loadingFallback={<RecallProductInfoLoadingFallback />}>
           <RecallProductInfo recallSn={recallSn} />
