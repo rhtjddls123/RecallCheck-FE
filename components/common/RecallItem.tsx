@@ -5,11 +5,11 @@ import ImageWithDefault from "./ImageWithDefault";
 export const RecallItemSkeleton = () => {
   return (
     <div className="flex flex-col gap-3 w-33">
-      <Skeleton className="size-33 rounded-2xl" />
+      <Skeleton className="size-33 rounded-2xl dark:bg-zinc-700" />
 
       <div className="flex flex-col gap-2 justify-center px-2">
-        <Skeleton className="w-full h-4" />
-        <Skeleton className="w-full h-3.5" />
+        <Skeleton className="w-full h-4 dark:bg-zinc-700" />
+        <Skeleton className="w-full h-3.5 dark:bg-zinc-700" />
       </div>
     </div>
   );

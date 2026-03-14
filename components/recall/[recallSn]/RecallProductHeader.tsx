@@ -52,7 +52,7 @@ const IndustrialProductHeader = ({
   ];
 
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
       <Carousel>
         <CarouselContent>
           {recallImgUrls && recallImgUrls.length > 0 ? (
@@ -79,7 +79,7 @@ const IndustrialProductHeader = ({
       </Carousel>
 
       <div className="flex flex-col gap-5">
-        <h2 className="text-18_B text-gray-800">{productNm}</h2>
+        <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
       </div>
     </div>
@@ -100,8 +100,8 @@ const AutomobileProductHeader = ({
     { title: "모델명", description: modlNmInfo }
   ];
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
-      <h2 className="text-18_B text-gray-800">{productNm}</h2>
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
+      <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
       <HeaderBaseTable data={tableData} />
     </div>
   );
@@ -121,8 +121,8 @@ const MedicineProductHeader = ({
     { title: "제조번호", description: mnfcturNoInfo }
   ];
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
-      <h2 className="text-18_B text-gray-800">{productNm}</h2>
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
+      <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
       <HeaderBaseTable data={tableData} />
     </div>
   );
@@ -153,8 +153,8 @@ const MedicalDeviceProductHeader = ({
     { title: "입허가번호", description: prmisnNo }
   ];
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
-      <h2 className="text-18_B text-gray-800">{productNm}</h2>
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
+      <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
       <HeaderBaseTable data={tableData} />
     </div>
   );
@@ -178,7 +178,7 @@ const HygieneProductHeader = ({
   ];
 
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
       <Carousel>
         <CarouselContent>
           {recallImgUrls && recallImgUrls.length > 0 ? (
@@ -205,7 +205,7 @@ const HygieneProductHeader = ({
       </Carousel>
 
       <div className="flex flex-col gap-5">
-        <h2 className="text-18_B text-gray-800">{productNm}</h2>
+        <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
       </div>
     </div>
@@ -230,7 +230,7 @@ const DailyRadiationProductHeader = ({
   ];
 
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
       <Carousel>
         <CarouselContent>
           {recallImgUrls && recallImgUrls.length > 0 ? (
@@ -257,7 +257,7 @@ const DailyRadiationProductHeader = ({
       </Carousel>
 
       <div className="flex flex-col gap-5">
-        <h2 className="text-18_B text-gray-800">{productNm}</h2>
+        <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
       </div>
     </div>
@@ -271,8 +271,8 @@ const ConsumerChemicalProductHeader = ({ productNm, cntntsId, bsnmNm, modlNmInfo
     { title: "모델명", description: modlNmInfo }
   ];
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
-      <h2 className="text-18_B text-gray-800">{productNm}</h2>
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
+      <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
       <HeaderBaseTable data={tableData} />
     </div>
   );
@@ -296,7 +296,7 @@ const FoodProductHeader = ({
   ];
 
   return (
-    <div className="p-4 flex flex-col gap-5 bg-white">
+    <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
       <Carousel>
         <CarouselContent>
           {recallImgUrls && recallImgUrls.length > 0 ? (
@@ -323,7 +323,7 @@ const FoodProductHeader = ({
       </Carousel>
 
       <div className="flex flex-col gap-5">
-        <h2 className="text-18_B text-gray-800">{productNm}</h2>
+        <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
       </div>
     </div>
@@ -339,9 +339,11 @@ const HeaderBaseTable = ({
     <table className="w-full border-collapse">
       <tbody>
         {data.map((v) => (
-          <tr key={v.title} className="border-t border-gray-200">
-            <td className="py-2 pr-4 text-gray-700 whitespace-nowrap w-30 text-14_B">{v.title}</td>
-            <td className="py-2 text-gray-700 text-12_M break-all flex flex-col gap-1">
+          <tr key={v.title} className="border-t border-gray-200 dark:border-zinc-700">
+            <td className="py-2 pr-4 text-gray-700 dark:text-gray-400 whitespace-nowrap w-30 text-14_B">
+              {v.title}
+            </td>
+            <td className="py-2 text-gray-700 dark:text-gray-300 text-12_M break-all flex flex-col gap-1">
               {Array.isArray(v.description)
                 ? v.description.length > 0
                   ? v.description.map((item) => <p key={item}>{item}</p>)

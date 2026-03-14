@@ -61,7 +61,7 @@ const IndustrialProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -117,7 +117,7 @@ const AutomobileProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -166,7 +166,7 @@ const MedicineProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -211,7 +211,7 @@ const MedicalDeviceProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -261,7 +261,7 @@ const HygieneProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -317,7 +317,7 @@ const DailyRadiationProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -369,7 +369,7 @@ const ConsumerChemicalProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -416,7 +416,7 @@ const FoodProductBody = ({
   ];
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-5">
+    <div className="p-4 bg-white dark:bg-zinc-800 flex flex-col gap-5">
       <BodyBaseSection title="리콜이유">
         <BodyBaseTable data={tableData} />
       </BodyBaseSection>
@@ -471,17 +471,19 @@ const BodyBaseTable = ({
     <table className="w-full border-collapse">
       <tbody>
         {data.map((v) => (
-          <tr key={v.title} className="border-t border-gray-200">
-            <td className="py-2 pr-4 text-gray-700 whitespace-nowrap w-32 text-14_B">{v.title}</td>
+          <tr key={v.title} className="border-t border-gray-200 dark:border-zinc-700">
+            <td className="py-2 pr-4 text-gray-700 dark:text-gray-400 whitespace-nowrap w-32 text-14_B">
+              {v.title}
+            </td>
             {Array.isArray(v.description) ? (
-              <td className="py-2 text-gray-700 text-12_M flex flex-col gap-1">
+              <td className="py-2 text-gray-700 dark:text-gray-300 text-12_M flex flex-col gap-1">
                 {v.description.length > 0
                   ? v.description.map((item, index) => <p key={`${item}-${index}`}>{item}</p>)
                   : v.description || "-"}
               </td>
             ) : (
               <td
-                className="py-2 text-gray-700 text-12_M flex flex-col gap-1"
+                className="py-2 text-gray-700 dark:text-gray-300 text-12_M flex flex-col gap-1"
                 dangerouslySetInnerHTML={{ __html: v.description || "-" }}
               />
             )}

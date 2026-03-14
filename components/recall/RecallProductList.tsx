@@ -6,8 +6,8 @@ import { cookies } from "next/headers";
 
 export const RecallProductListLoadingFallback = () => {
   return (
-    <div className="w-full bg-white flex flex-col items-center justify-between h-full flex-1">
-      <div className="grid grid-cols-2 gap-4 bg-white">
+    <div className="w-full bg-white dark:bg-zinc-800 flex flex-col items-center justify-between h-full flex-1">
+      <div className="grid grid-cols-2 gap-4 bg-white dark:bg-zinc-800">
         {Array.from({ length: 10 }).map((_, i) => (
           <RecallItemSkeleton key={i} />
         ))}
