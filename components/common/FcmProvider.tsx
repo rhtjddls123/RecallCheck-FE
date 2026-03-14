@@ -2,7 +2,7 @@
 
 import { useSse } from "@/hooks/useSse";
 import { getApps, initializeApp } from "firebase/app";
-import { getMessaging, onMessage } from "firebase/messaging";
+import { getMessaging, isSupported, onMessage } from "firebase/messaging";
 import { useEffect } from "react";
 
 const firebaseConfig = {
@@ -20,12 +20,18 @@ const FcmProvider = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-    const messaging = getMessaging(app);
+    const init = async () => {
+      const supported = await isSupported();
+      if (!supported) return;
 
-    const unsubscribe = onMessage(messaging, () => {});
+      const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+      const messaging = getMessaging(app);
+      const unsubscribe = onMessage(messaging, () => {});
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    };
+
+    init();
   }, []);
 
   return null;
