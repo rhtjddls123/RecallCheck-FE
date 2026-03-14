@@ -17,17 +17,17 @@ export default function Home() {
       <Header />
 
       {/* 헤더와 TabBar를 제외한 실제 콘텐츠 영역 */}
-      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-100">
+      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-100 dark:bg-zinc-900">
         <div className="flex flex-col gap-2.5">
           {/* 검색창 영역 */}
-          <section className="px-4 py-1.25 bg-white">
+          <section className="px-4 py-1.25 bg-white dark:bg-zinc-800">
             <Suspense fallback={<Skeleton className="w-full h-9" />}>
               <SearchInput />
             </Suspense>
           </section>
 
           {/* 배너 영역 */}
-          <section className="px-4 py-5 bg-white">
+          <section className="px-4 py-5 bg-white dark:bg-zinc-800">
             <Banner />
           </section>
 

@@ -29,8 +29,12 @@ const RecallItem = ({ description, href, title, alt, img }: RecallItemProps) => 
       <ImageWithDefault src={img} alt={alt} className="size-33 rounded-2xl object-cover" />
 
       <div className="flex flex-col gap-2 justify-center px-2">
-        <h3 className="select-none text-16_B text-gray-950 w-full truncate">{title}</h3>
-        <span className="select-none text-14_M text-gray-600 w-full truncate">{description}</span>
+        <h3 className="select-none text-16_B text-gray-950 dark:text-gray-100 w-full truncate">
+          {title}
+        </h3>
+        <span className="select-none text-14_M text-gray-600 dark:text-gray-400 w-full truncate">
+          {description}
+        </span>
       </div>
     </Link>
   );
