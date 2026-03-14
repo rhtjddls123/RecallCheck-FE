@@ -37,8 +37,8 @@ const RecallProductList = async ({ filters, isChatbot = false }: RecallProductLi
   const recallData = (await res.json()) as RecallPaginationResponse;
 
   return (
-    <div className="w-full bg-white flex flex-col items-center justify-between h-full flex-1">
-      <div className="grid grid-cols-2 gap-4 bg-white">
+    <div className="w-full bg-white dark:bg-zinc-800 flex flex-col items-center justify-between h-full flex-1">
+      <div className="grid grid-cols-2 gap-4 bg-white dark:bg-zinc-800">
         {recallData.data.map((p) => (
           <RecallItem
             key={p.recallSn}

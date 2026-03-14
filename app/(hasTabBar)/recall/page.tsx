@@ -18,9 +18,9 @@ const RecallPage = async ({ searchParams }: RecallPageProps) => {
     <div>
       <Header />
 
-      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-100 [&>div>div]:h-full">
+      <ScrollArea className="h-[calc(100dvh-120px)] bg-gray-100 dark:bg-zinc-900 [&>div>div]:h-full">
         <div className="flex flex-col gap-2.5 min-h-full">
-          <section className="px-4 py-1.25 bg-white">
+          <section className="px-4 py-1.25 bg-white dark:bg-zinc-800">
             <SearchInput />
           </section>
 
