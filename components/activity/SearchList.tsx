@@ -2,7 +2,7 @@
 
 import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 import BaseList from "./BaseList";
-import { XIcon } from "lucide-react";
+import { ShieldCheckIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { useDeleteActivity } from "@/hooks/useDeleteActivity";
 
@@ -23,7 +23,7 @@ const SearchListItem = ({ logId, title, description }: SearchListItemProps) => {
   return (
     <Link href={description} className="flex flex-col gap-1">
       <div className="flex gap-1 items-center">
-        <div className="size-6 bg-blue-400" />
+        <ShieldCheckIcon className="size-6" />
         <p className="text-18_B truncate flex-1">{title}</p>
         <XIcon onClick={handleDelete} className="size-4 cursor-pointer hover:text-black/60" />
       </div>
