@@ -1,7 +1,7 @@
 import Header from "@/components/common/Header";
 import SearchInput from "@/components/common/SearchInput";
 import SuspenseWithErrorBoundary from "@/components/common/SuspenseWithErrorBoundary";
-import Banner from "@/components/Home/Banner";
+import BannerFetcher from "@/components/Home/BannerFetcher";
 import HomeSectionWrapper from "@/components/Home/HomeSectionWrapper";
 import RecentRecallCarousel, {
   RecentRecallCarouselLoadingFallback
@@ -28,7 +28,9 @@ export default function Home() {
 
           {/* 배너 영역 */}
           <section className="px-4 py-5 bg-white dark:bg-zinc-800">
-            <Banner />
+            <SuspenseWithErrorBoundary loadingFallback={<RecentRecallCarouselLoadingFallback />}>
+              <BannerFetcher />
+            </SuspenseWithErrorBoundary>
           </section>
 
           {/* 최근 리콜 제품 영역 */}
