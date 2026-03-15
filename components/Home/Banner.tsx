@@ -5,33 +5,8 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/caro
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-
-const BANNER_INFO: { id: string; src: string; alt: string; href: string }[] = [
-  {
-    id: "1",
-    src: "/banner_1.png",
-    alt: "FestiFriends main banner 1",
-    href: "/performances"
-  },
-  {
-    id: "2",
-    src: "/banner_2.jpg",
-    alt: "FestiFriends main banner 2",
-    href: "/performances/32"
-  },
-  {
-    id: "3",
-    src: "/banner_3.jpg",
-    alt: "FestiFriends main banner 3",
-    href: "/performances/43"
-  },
-  {
-    id: "4",
-    src: "/banner_4.jpg",
-    alt: "FestiFriends main banner 4",
-    href: "/performances/33"
-  }
-];
+import { RecallNewsType } from "./BannerFetcher";
+import ImageWithDefault from "../common/ImageWithDefault";
 
 interface MainBannerPaginationProps {
   totalPage: number;
@@ -53,7 +28,11 @@ const BannerPagination = ({ totalPage, currentPage, className }: MainBannerPagin
   </div>
 );
 
-const Banner = () => {
+interface BannerProps {
+  data: RecallNewsType[];
+}
+
+const Banner = ({ data }: BannerProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -85,9 +64,15 @@ const Banner = () => {
       ]}
     >
       <CarouselContent className="m-0">
-        {BANNER_INFO.map((item) => (
-          <CarouselItem key={item.id} className="aspect-video w-full bg-blue-400 rounded-3xl">
-            <Link href={item.href}></Link>
+        {data.map((item) => (
+          <CarouselItem key={item.id} className="aspect-video w-full rounded-3xl pl-0">
+            <Link target="_blank" href={item.linkUrl} className="w-full rounded-3xl">
+              <ImageWithDefault
+                src={item.thumbnailUrl}
+                alt={item.title}
+                className="object-cover rounded-3xl"
+              />
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>
