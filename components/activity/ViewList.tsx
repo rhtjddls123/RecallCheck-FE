@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 import BaseList from "./BaseList";
 import Link from "next/link";
@@ -15,7 +16,7 @@ interface ViewListItemProps {
   href: string;
 }
 
-const ViewListItem = ({ logId, productNm, imgSrc, makr, href }: ViewListItemProps) => {
+const ViewListItem = memo(function ViewListItem({ logId, productNm, imgSrc, makr, href }: ViewListItemProps) {
   const { mutate: deleteActivity } = useDeleteActivity();
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -40,7 +41,7 @@ const ViewListItem = ({ logId, productNm, imgSrc, makr, href }: ViewListItemProp
       />
     </Link>
   );
-};
+});
 
 interface ViewListProps {
   type: LogTypeEnum;

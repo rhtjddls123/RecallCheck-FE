@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 import BaseList from "./BaseList";
 import Link from "next/link";
@@ -14,7 +15,7 @@ interface ImageListItemProps {
   href: string;
 }
 
-const ImageListItem = ({ logId, imgSrc, href }: ImageListItemProps) => {
+const ImageListItem = memo(function ImageListItem({ logId, imgSrc, href }: ImageListItemProps) {
   const { mutate: deleteActivity } = useDeleteActivity();
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -32,7 +33,7 @@ const ImageListItem = ({ logId, imgSrc, href }: ImageListItemProps) => {
       />
     </Link>
   );
-};
+});
 
 interface ImageListProps {
   type: LogTypeEnum;
