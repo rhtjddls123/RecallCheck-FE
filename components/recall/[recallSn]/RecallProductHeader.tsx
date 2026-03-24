@@ -33,8 +33,32 @@ const RecallProductHeader = ({ recallDetail }: RecallProductHeaderProps) => {
   if (recallDetail.cntntsId === "0401") return <ConsumerChemicalProductHeader {...recallDetail} />; // 생활화학제품
   if (recallDetail.cntntsId === "0201" || recallDetail.cntntsId === "0202")
     return <FoodProductHeader {...recallDetail} />; // 식품
-  return;
+  return null;
 };
+
+const RecallImageCarousel = ({ recallImgUrls }: { recallImgUrls?: string[] | null }) => (
+  <Carousel>
+    <CarouselContent>
+      {recallImgUrls && recallImgUrls.length > 0 ? (
+        recallImgUrls.map((item) => (
+          <CarouselItem key={item}>
+            <ImageWithDefault src={item} className="rounded-2xl object-cover max-h-85.75 w-85.75" />
+          </CarouselItem>
+        ))
+      ) : (
+        <CarouselItem>
+          <ImageWithDefault className="rounded-2xl object-cover" />
+        </CarouselItem>
+      )}
+    </CarouselContent>
+    {recallImgUrls && recallImgUrls.length > 1 && (
+      <>
+        <CarouselPrevious className="left-2" />
+        <CarouselNext className="right-2" />
+      </>
+    )}
+  </Carousel>
+);
 
 const IndustrialProductHeader = ({
   productNm,
@@ -53,31 +77,7 @@ const IndustrialProductHeader = ({
 
   return (
     <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
-      <Carousel>
-        <CarouselContent>
-          {recallImgUrls && recallImgUrls.length > 0 ? (
-            recallImgUrls.map((item) => (
-              <CarouselItem key={item}>
-                <ImageWithDefault
-                  src={item}
-                  className="rounded-2xl object-cover max-h-85.75 w-85.75"
-                />
-              </CarouselItem>
-            ))
-          ) : (
-            <CarouselItem>
-              <ImageWithDefault className="rounded-2xl object-cover" />
-            </CarouselItem>
-          )}
-        </CarouselContent>
-        {recallImgUrls && recallImgUrls.length > 1 && (
-          <>
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
-          </>
-        )}
-      </Carousel>
-
+      <RecallImageCarousel recallImgUrls={recallImgUrls} />
       <div className="flex flex-col gap-5">
         <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
@@ -179,31 +179,7 @@ const HygieneProductHeader = ({
 
   return (
     <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
-      <Carousel>
-        <CarouselContent>
-          {recallImgUrls && recallImgUrls.length > 0 ? (
-            recallImgUrls.map((item) => (
-              <CarouselItem key={item}>
-                <ImageWithDefault
-                  src={item}
-                  className="rounded-2xl object-cover max-h-85.75 w-85.75"
-                />
-              </CarouselItem>
-            ))
-          ) : (
-            <CarouselItem>
-              <ImageWithDefault className="rounded-2xl object-cover" />
-            </CarouselItem>
-          )}
-        </CarouselContent>
-        {recallImgUrls && recallImgUrls.length > 1 && (
-          <>
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
-          </>
-        )}
-      </Carousel>
-
+      <RecallImageCarousel recallImgUrls={recallImgUrls} />
       <div className="flex flex-col gap-5">
         <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
@@ -231,31 +207,7 @@ const DailyRadiationProductHeader = ({
 
   return (
     <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
-      <Carousel>
-        <CarouselContent>
-          {recallImgUrls && recallImgUrls.length > 0 ? (
-            recallImgUrls.map((item) => (
-              <CarouselItem key={item}>
-                <ImageWithDefault
-                  src={item}
-                  className="rounded-2xl object-cover max-h-85.75 w-85.75"
-                />
-              </CarouselItem>
-            ))
-          ) : (
-            <CarouselItem>
-              <ImageWithDefault className="rounded-2xl object-cover" />
-            </CarouselItem>
-          )}
-        </CarouselContent>
-        {recallImgUrls && recallImgUrls.length > 1 && (
-          <>
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
-          </>
-        )}
-      </Carousel>
-
+      <RecallImageCarousel recallImgUrls={recallImgUrls} />
       <div className="flex flex-col gap-5">
         <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
@@ -297,31 +249,7 @@ const FoodProductHeader = ({
 
   return (
     <div className="p-4 flex flex-col gap-5 bg-white dark:bg-zinc-800">
-      <Carousel>
-        <CarouselContent>
-          {recallImgUrls && recallImgUrls.length > 0 ? (
-            recallImgUrls.map((item) => (
-              <CarouselItem key={item}>
-                <ImageWithDefault
-                  src={item}
-                  className="rounded-2xl object-cover max-h-85.75 w-85.75"
-                />
-              </CarouselItem>
-            ))
-          ) : (
-            <CarouselItem>
-              <ImageWithDefault className="rounded-2xl object-cover" />
-            </CarouselItem>
-          )}
-        </CarouselContent>
-        {recallImgUrls && recallImgUrls.length > 1 && (
-          <>
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
-          </>
-        )}
-      </Carousel>
-
+      <RecallImageCarousel recallImgUrls={recallImgUrls} />
       <div className="flex flex-col gap-5">
         <h2 className="text-18_B text-gray-800 dark:text-gray-100">{productNm}</h2>
         <HeaderBaseTable data={tableData} />
@@ -346,7 +274,7 @@ const HeaderBaseTable = ({
             <td className="py-2 text-gray-700 dark:text-gray-300 text-12_M break-all flex flex-col gap-1">
               {Array.isArray(v.description)
                 ? v.description.length > 0
-                  ? v.description.map((item) => <p key={item}>{item}</p>)
+                  ? v.description.map((item, index) => <p key={`${item}-${index}`}>{item}</p>)
                   : "-"
                 : v.description || "-"}
             </td>
