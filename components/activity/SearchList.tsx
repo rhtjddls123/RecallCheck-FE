@@ -3,7 +3,8 @@
 import { memo } from "react";
 import { LogTypeEnum } from "@/const/LogTypeEnum.const";
 import BaseList from "./BaseList";
-import { ShieldCheckIcon, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useDeleteActivity } from "@/hooks/useDeleteActivity";
 
@@ -24,7 +25,7 @@ const SearchListItem = memo(function SearchListItem({ logId, title, description 
   return (
     <Link href={description} className="flex flex-col gap-1">
       <div className="flex gap-1 items-center">
-        <ShieldCheckIcon className="size-6" />
+        <Image src="/favicon.ico" alt="favicon" width={24} height={24} />
         <p className="text-18_B truncate flex-1">{title}</p>
         <XIcon onClick={handleDelete} className="size-4 cursor-pointer hover:text-black/60" />
       </div>
