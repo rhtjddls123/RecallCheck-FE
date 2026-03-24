@@ -8,7 +8,7 @@ export const RecallProductListLoadingFallback = () => {
   return (
     <div className="w-full bg-white dark:bg-zinc-800 flex flex-col items-center justify-between h-full flex-1">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 bg-white dark:bg-zinc-800 w-full">
-        {Array.from({ length: 10 }).map((_, i) => (
+        {Array.from({ length: 12 }).map((_, i) => (
           <RecallItemSkeleton key={i} />
         ))}
       </div>
