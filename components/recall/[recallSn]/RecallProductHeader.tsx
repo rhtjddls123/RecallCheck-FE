@@ -42,7 +42,7 @@ const RecallImageCarousel = ({ recallImgUrls }: { recallImgUrls?: string[] | nul
       {recallImgUrls && recallImgUrls.length > 0 ? (
         recallImgUrls.map((item) => (
           <CarouselItem key={item}>
-            <ImageWithDefault src={item} className="rounded-2xl object-cover max-h-85.75 w-85.75" />
+            <ImageWithDefault src={item} className="rounded-2xl object-cover max-h-96 w-full" />
           </CarouselItem>
         ))
       ) : (

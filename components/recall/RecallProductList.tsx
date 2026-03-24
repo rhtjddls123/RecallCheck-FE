@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export const RecallProductListLoadingFallback = () => {
   return (
     <div className="w-full bg-white dark:bg-zinc-800 flex flex-col items-center justify-between h-full flex-1">
-      <div className="grid grid-cols-2 gap-4 bg-white dark:bg-zinc-800">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 bg-white dark:bg-zinc-800 w-full">
         {Array.from({ length: 10 }).map((_, i) => (
           <RecallItemSkeleton key={i} />
         ))}
@@ -30,15 +30,19 @@ const RecallProductList = async ({ filters, isChatbot = false }: RecallProductLi
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const url = `${baseUrl}/recall${isChatbot ? "/chatbot-search/paginated" : ""}`;
-  const res = await fetchWithParams(`${url}`, filters, {
-    cache: "no-store",
-    headers: { Cookie: cookieHeader }
-  });
+  const res = await fetchWithParams(
+    `${url}`,
+    { ...filters, take: 12 },
+    {
+      cache: "no-store",
+      headers: { Cookie: cookieHeader }
+    }
+  );
   const recallData = (await res.json()) as RecallPaginationResponse;
 
   return (
-    <div className="w-full bg-white dark:bg-zinc-800 flex flex-col items-center justify-between h-full flex-1">
-      <div className="grid grid-cols-2 gap-4 bg-white dark:bg-zinc-800">
+    <div className="w-full bg-white dark:bg-zinc-800 flex flex-col items-center justify-between h-full flex-1 px-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 bg-white dark:bg-zinc-800">
         {recallData.data.map((p) => (
           <RecallItem
             key={p.recallSn}

@@ -26,7 +26,10 @@ const ImageListItem = memo(function ImageListItem({ logId, imgSrc, href }: Image
 
   return (
     <Link href={href} className="relative">
-      <ImageWithDefault src={imgSrc || ""} className="size-41 rounded-2xl object-cover" />
+      <ImageWithDefault
+        src={imgSrc || ""}
+        className="w-full aspect-square rounded-2xl object-cover"
+      />
       <XIcon
         onClick={handleDelete}
         className="size-4 cursor-pointer hover:text-black/60 absolute top-2 right-2"
@@ -42,7 +45,9 @@ interface ImageListProps {
 const ImageList = ({ type }: ImageListProps) => {
   return (
     <BaseList
-      className={(items) => cn(items.length > 0 && "grid grid-cols-2")}
+      className={(items) =>
+        cn(items.length > 0 && "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4")
+      }
       type={type}
       renderItem={(item) => (
         <ImageListItem

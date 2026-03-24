@@ -31,7 +31,7 @@ const ViewListItem = memo(function ViewListItem({ logId, productNm, imgSrc, makr
         alt={productNm}
         className="size-19.25 rounded-2xl object-cover"
       />
-      <div className="flex flex-col gap-1.5 w-64">
+      <div className="flex flex-col gap-1.5 flex-1 min-w-0">
         <h3 className="text-18_B truncate">{productNm}</h3>
         <p className="text-12_M truncate text-gray-400">{makr}</p>
       </div>

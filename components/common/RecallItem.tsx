@@ -4,8 +4,8 @@ import ImageWithDefault from "./ImageWithDefault";
 
 export const RecallItemSkeleton = () => {
   return (
-    <div className="flex flex-col gap-3 w-33">
-      <Skeleton className="size-33 rounded-2xl dark:bg-zinc-700" />
+    <div className="flex flex-col gap-3 w-full">
+      <Skeleton className="w-full aspect-square rounded-2xl dark:bg-zinc-700" />
 
       <div className="flex flex-col gap-2 justify-center px-2">
         <Skeleton className="w-full h-4 dark:bg-zinc-700" />
@@ -25,8 +25,12 @@ interface RecallItemProps {
 
 const RecallItem = ({ description, href, title, alt, img }: RecallItemProps) => {
   return (
-    <Link href={href} className="flex flex-col gap-3 w-33">
-      <ImageWithDefault src={img} alt={alt} className="size-33 rounded-2xl object-cover" />
+    <Link href={href} className="flex flex-col gap-3 w-full">
+      <ImageWithDefault
+        src={img}
+        alt={alt}
+        className="w-full aspect-square rounded-2xl object-cover"
+      />
 
       <div className="flex flex-col gap-2 justify-center px-2">
         <h3 className="select-none text-16_B text-gray-950 dark:text-gray-100 w-full truncate">

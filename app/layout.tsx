@@ -45,7 +45,7 @@ export default function RootLayout({
           <QueryProvider>
             <AuthProvider>
               <FcmProvider />
-              <main className=" relative h-dvh w-93.75">{children}</main>
+              <main className="relative h-dvh w-full max-w-3xl">{children}</main>
             </AuthProvider>
             <Toaster />
             <Analytics />
