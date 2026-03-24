@@ -62,10 +62,30 @@ export const notificationApi = {
       quietEnd
     });
     return response.data;
+  },
+
+  getKeywords: async () => {
+    const response = await api.get<KeywordType[]>("/notification/keyword");
+    return response.data;
+  },
+
+  addKeyword: async (keyword: string) => {
+    const response = await api.post("/notification/keyword", { keyword });
+    return response.data;
+  },
+
+  deleteKeyword: async (id: number) => {
+    const response = await api.delete(`/notification/keyword/${id}`);
+    return response.data;
   }
 };
 
 export interface PatchQuiteTimeRequest {
   quietStart: string | null;
   quietEnd: string | null;
+}
+
+export interface KeywordType {
+  id: number;
+  keyword: string;
 }

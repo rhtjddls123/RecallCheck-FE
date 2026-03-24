@@ -3,6 +3,7 @@
 import NotificationChannelSection from "./NotificationChannelSection";
 import NotificationDndSection from "./NotificationDndSection";
 import NotificationCategorySection from "./NotificationCategorySection";
+import NotificationKeywordSection from "./NotificationKeywordSection";
 import { useAuthGuard } from "@/hooks/useAuth";
 import LoginFallback from "@/components/common/LoginFallback";
 
@@ -21,6 +22,7 @@ export default function NotificationSettings() {
       </div>
 
       <NotificationCategorySection />
+      <NotificationKeywordSection />
       <NotificationDndSection />
       <NotificationChannelSection />
     </div>
