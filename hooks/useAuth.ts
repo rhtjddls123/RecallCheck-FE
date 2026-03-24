@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 export const useAuth = () => {
-  const { setUser } = useAuthStore();
+  const { setUser, clearUser } = useAuthStore();
   const { settingUnread } = useNotificationStore();
 
   const { data } = useQuery({
@@ -19,16 +19,17 @@ export const useAuth = () => {
         return null;
       }
     },
-    retry: false,
-    staleTime: Infinity
+    retry: false
   });
 
   useEffect(() => {
     if (data) {
       setUser(data);
       settingUnread(data.unreadCount);
+    } else if (data === null) {
+      clearUser();
     }
-  }, [data, setUser, settingUnread]);
+  }, [data, setUser, clearUser, settingUnread]);
 };
 
 export const useAuthGuard = () => {
