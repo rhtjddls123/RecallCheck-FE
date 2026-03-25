@@ -9,9 +9,9 @@ export const RecentRecallCarouselLoadingFallback = () => {
         align: "start"
       }}
     >
-      <CarouselContent className="m-0 gap-3 w-85.75">
+      <CarouselContent className="m-0 gap-3 w-full">
         {Array.from({ length: 5 }).map((_, i) => (
-          <CarouselItem key={i} className="p-0 basis-33">
+          <CarouselItem key={i} className="p-0 basis-35 sm:basis-40 md:basis-45">
             <RecallItemSkeleton />
           </CarouselItem>
         ))}
@@ -33,9 +33,9 @@ const RecentRecallCarousel = async () => {
         align: "start"
       }}
     >
-      <CarouselContent className="m-0 gap-3 w-85.75">
+      <CarouselContent className="m-0 gap-3 w-full">
         {recalls.map((recall) => (
-          <CarouselItem key={recall.recallSn} className="p-0 basis-33">
+          <CarouselItem key={recall.recallSn} className="p-0 basis-35 sm:basis-40 md:basis-45">
             <RecallItem
               href={`/recall/${recall.recallSn}`}
               title={recall.productNm}

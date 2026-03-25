@@ -66,11 +66,11 @@ const Banner = ({ data }: BannerProps) => {
       <CarouselContent className="m-0">
         {data.map((item) => (
           <CarouselItem key={item.id} className="aspect-video w-full rounded-3xl pl-0">
-            <Link target="_blank" href={item.linkUrl} className="w-full rounded-3xl">
+            <Link target="_blank" href={item.linkUrl} className="block w-full h-full rounded-3xl">
               <ImageWithDefault
                 src={item.thumbnailUrl}
                 alt={item.title}
-                className="object-cover rounded-3xl"
+                className="w-full h-full object-cover rounded-3xl"
               />
             </Link>
           </CarouselItem>

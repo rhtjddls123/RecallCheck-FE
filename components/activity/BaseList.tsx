@@ -36,7 +36,7 @@ const BaseList = ({ type, className, renderItem }: BaseListProps) => {
 
   return (
     <ScrollArea className="h-[calc(100dvh-209.6px)]">
-      <div className={cn("flex flex-col gap-4 w-fit max-w-87.75", className?.(items))}>
+      <div className={cn("flex flex-col gap-4 w-full", className?.(items))}>
         {items.length > 0 ? (
           items.map((item) => renderItem(item))
         ) : (

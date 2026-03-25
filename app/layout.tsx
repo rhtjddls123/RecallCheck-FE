@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   },
   description: "리콜 제품을 빠르게 확인하세요",
   icons: {
-    icon: "/favicon.ico"
+    icon: "/favicon.ico",
+    apple: "/favicon.ico"
   },
   openGraph: {
     title: "리콜체크",
@@ -45,7 +46,7 @@ export default function RootLayout({
           <QueryProvider>
             <AuthProvider>
               <FcmProvider />
-              <main className=" relative h-dvh w-93.75">{children}</main>
+              <main className="relative h-dvh w-full max-w-3xl">{children}</main>
             </AuthProvider>
             <Toaster />
             <Analytics />
