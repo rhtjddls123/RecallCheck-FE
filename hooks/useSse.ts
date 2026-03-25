@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNotificationStore } from "@/store/notificationStore";
 
 const RECONNECT_DELAY_MS = 3000;
+const MAX_RETRIES = 5;
 
 export const useSse = () => {
   const { user } = useAuthStore();
@@ -14,6 +15,7 @@ export const useSse = () => {
   const { incrementUnread } = useNotificationStore();
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const esRef = useRef<EventSource | null>(null);
+  const retryCount = useRef(0);
 
   useEffect(() => {
     if (!user) return;
@@ -30,6 +32,7 @@ export const useSse = () => {
       esRef.current = eventSource;
 
       eventSource.onmessage = (e) => {
+        retryCount.current = 0;
         const { title } = JSON.parse(e.data as string) as { title: string; body: string };
         toast.message(title);
         incrementUnread();
@@ -38,9 +41,10 @@ export const useSse = () => {
 
       eventSource.onerror = () => {
         eventSource.close();
-        if (!isCancelled) {
-          reconnectTimer.current = setTimeout(connect, RECONNECT_DELAY_MS);
-        }
+        if (isCancelled) return;
+        if (retryCount.current >= MAX_RETRIES) return;
+        retryCount.current += 1;
+        reconnectTimer.current = setTimeout(connect, RECONNECT_DELAY_MS);
       };
     };
 
@@ -48,6 +52,7 @@ export const useSse = () => {
 
     return () => {
       isCancelled = true;
+      retryCount.current = 0;
       if (reconnectTimer.current) clearTimeout(reconnectTimer.current);
       esRef.current?.close();
       esRef.current = null;
