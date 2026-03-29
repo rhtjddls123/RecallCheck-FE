@@ -14,9 +14,17 @@ interface ViewListItemProps {
   imgSrc: string;
   makr: string;
   href: string;
+  priority?: boolean;
 }
 
-const ViewListItem = memo(function ViewListItem({ logId, productNm, imgSrc, makr, href }: ViewListItemProps) {
+const ViewListItem = memo(function ViewListItem({
+  logId,
+  productNm,
+  imgSrc,
+  makr,
+  href,
+  priority
+}: ViewListItemProps) {
   const { mutate: deleteActivity } = useDeleteActivity();
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -30,6 +38,11 @@ const ViewListItem = memo(function ViewListItem({ logId, productNm, imgSrc, makr
         src={imgSrc}
         alt={productNm}
         className="size-19.25 rounded-2xl object-cover"
+        proxyWidth={77}
+        proxyHeight={77}
+        proxyFit="cover"
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
       />
       <div className="flex flex-col gap-1.5 flex-1 min-w-0">
         <h3 className="text-18_B truncate">{productNm}</h3>
@@ -51,7 +64,7 @@ const ViewList = ({ type }: ViewListProps) => {
   return (
     <BaseList
       type={type}
-      renderItem={(item) => (
+      renderItem={(item, index) => (
         <ViewListItem
           key={item.id}
           logId={item.id}
@@ -59,6 +72,7 @@ const ViewList = ({ type }: ViewListProps) => {
           imgSrc={item.imageUrl ?? ""}
           makr={item.makr ?? ""}
           href={item.targetUrl ?? ""}
+          priority={index === 0}
         />
       )}
     />

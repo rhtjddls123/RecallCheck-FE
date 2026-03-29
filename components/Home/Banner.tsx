@@ -64,13 +64,18 @@ const Banner = ({ data }: BannerProps) => {
       ]}
     >
       <CarouselContent className="m-0">
-        {data.map((item) => (
+        {data.map((item, index) => (
           <CarouselItem key={item.id} className="aspect-video w-full rounded-3xl pl-0">
             <Link target="_blank" href={item.linkUrl} className="block w-full h-full rounded-3xl">
               <ImageWithDefault
                 src={item.thumbnailUrl}
                 alt={item.title}
                 className="w-full h-full object-cover rounded-3xl"
+                proxyWidth={736}
+                proxyHeight={414}
+                proxyFit="cover"
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : undefined}
               />
             </Link>
           </CarouselItem>

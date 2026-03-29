@@ -12,7 +12,13 @@ interface SafetyInfoCardProps {
 const SafetyInfoCard = ({ title, description, img, href }: SafetyInfoCardProps) => {
   return (
     <Link target="_blank" href={href} className="flex gap-3 items-center">
-      <ImageWithDefault className="size-19.25 rounded-2xl object-cover" src={img} alt={title} />
+      <ImageWithDefault
+        className="size-19.25 rounded-2xl object-cover"
+        src={img}
+        alt={title}
+        proxyWidth={77}
+        proxyHeight={77}
+      />
 
       <div className="flex flex-col gap-1.5 flex-1 min-w-0">
         <h3 className="w-full text-18_B text-gray-950 dark:text-gray-100 truncate">{title}</h3>

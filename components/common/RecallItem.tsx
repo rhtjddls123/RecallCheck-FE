@@ -21,15 +21,21 @@ interface RecallItemProps {
   description: string;
   img?: string;
   alt?: string;
+  priority?: boolean;
 }
 
-const RecallItem = ({ description, href, title, alt, img }: RecallItemProps) => {
+const RecallItem = ({ description, href, title, alt, img, priority }: RecallItemProps) => {
   return (
     <Link href={href} className="flex flex-col gap-3 w-full">
       <ImageWithDefault
         src={img}
         alt={alt}
         className="w-full aspect-square rounded-2xl object-cover"
+        proxyWidth={172}
+        proxyHeight={172}
+        proxyFit="cover"
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
       />
 
       <div className="flex flex-col gap-2 justify-center px-2">
