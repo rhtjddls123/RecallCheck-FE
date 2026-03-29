@@ -13,9 +13,15 @@ interface ImageListItemProps {
   logId: number;
   imgSrc: string | null;
   href: string;
+  priority?: boolean;
 }
 
-const ImageListItem = memo(function ImageListItem({ logId, imgSrc, href }: ImageListItemProps) {
+const ImageListItem = memo(function ImageListItem({
+  logId,
+  imgSrc,
+  href,
+  priority
+}: ImageListItemProps) {
   const { mutate: deleteActivity } = useDeleteActivity();
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -29,6 +35,11 @@ const ImageListItem = memo(function ImageListItem({ logId, imgSrc, href }: Image
       <ImageWithDefault
         src={imgSrc || ""}
         className="w-full aspect-square rounded-2xl object-cover"
+        proxyWidth={174}
+        proxyHeight={174}
+        proxyFit="cover"
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
       />
       <XIcon
         onClick={handleDelete}
@@ -49,12 +60,13 @@ const ImageList = ({ type }: ImageListProps) => {
         cn(items.length > 0 && "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4")
       }
       type={type}
-      renderItem={(item) => (
+      renderItem={(item, index) => (
         <ImageListItem
           key={item.id}
           logId={item.id}
           imgSrc={item.imageUrl}
           href={item.targetUrl!}
+          priority={index === 0}
         />
       )}
     />

@@ -51,6 +51,9 @@ const RecallResultCard = ({ product, foundInOtherCategory }: RecallResultCardPro
             src={product.recallImgUrls?.[0]}
             alt={product.productNm}
             className="size-9 rounded-sm object-cover"
+            proxyWidth={36}
+            proxyHeight={36}
+            proxyFit="cover"
           />
         </div>
         <div className="flex justify-between text-xs">

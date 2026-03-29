@@ -43,13 +43,14 @@ const RecallProductList = async ({ filters, isChatbot = false }: RecallProductLi
   return (
     <div className="w-full bg-white dark:bg-zinc-800 flex flex-col items-center justify-between h-full flex-1 px-4">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 bg-white dark:bg-zinc-800">
-        {recallData.data.map((p) => (
+        {recallData.data.map((p, i) => (
           <RecallItem
             key={p.recallSn}
             href={`/recall/${p.recallSn}`}
             title={p.productNm}
             description={p.makr || p.bsnmNm || ""}
             img={p.recallImgUrls?.[0]}
+            priority={i === 0}
           />
         ))}
       </div>

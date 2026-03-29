@@ -11,7 +11,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "../ui/empty";
 interface BaseListProps {
   type: LogTypeEnum;
   className?: (items: UserLogType[]) => string;
-  renderItem: (item: UserLogType) => ReactNode;
+  renderItem: (item: UserLogType, index: number) => ReactNode;
 }
 
 const BaseList = ({ type, className, renderItem }: BaseListProps) => {
@@ -38,7 +38,7 @@ const BaseList = ({ type, className, renderItem }: BaseListProps) => {
     <ScrollArea className="h-[calc(100dvh-209.6px)]">
       <div className={cn("flex flex-col gap-4 w-full", className?.(items))}>
         {items.length > 0 ? (
-          items.map((item) => renderItem(item))
+          items.map((item, index) => renderItem(item, index))
         ) : (
           <Empty>
             <EmptyHeader>

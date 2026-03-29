@@ -40,9 +40,17 @@ const RecallImageCarousel = ({ recallImgUrls }: { recallImgUrls?: string[] | nul
   <Carousel>
     <CarouselContent>
       {recallImgUrls && recallImgUrls.length > 0 ? (
-        recallImgUrls.map((item) => (
+        recallImgUrls.map((item, index) => (
           <CarouselItem key={item}>
-            <ImageWithDefault src={item} className="rounded-2xl object-cover max-h-96 w-full" />
+            <ImageWithDefault
+              src={item}
+              className="rounded-2xl object-cover max-h-96 w-full"
+              proxyWidth={736}
+              proxyHeight={384}
+              proxyFit="cover"
+              fetchPriority={index === 0 ? "high" : undefined}
+              loading={index === 0 ? "eager" : "lazy"}
+            />
           </CarouselItem>
         ))
       ) : (
