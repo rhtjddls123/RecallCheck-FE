@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 
+export const preferredRegion = "icn1";
+
 const ALLOWED_DOMAINS = ["consumer.go.kr", "eibexbylciqbdbewylvz.supabase.co"];
 
 export async function GET(request: NextRequest) {
